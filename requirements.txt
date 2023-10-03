@@ -22,7 +22,7 @@ redis==5.0.0
 requests==2.31.0
 testcontainers-core==0.0.1rc1
 testcontainers-redis==0.0.1rc1
-urllib3==2.0.4
+urllib3==2.0.6
 websocket-client==1.6.2
 Werkzeug==2.3.7
 wrapt==1.15.0
