@@ -25,5 +25,5 @@ testcontainers-core==0.0.1rc1
 testcontainers-redis==0.0.1rc1
 urllib3==2.0.7
 websocket-client==1.6.2
-Werkzeug==3.0.1
+Werkzeug==2.3.7
 wrapt==1.15.0
