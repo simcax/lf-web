@@ -4,6 +4,8 @@ on:
     workflows: [Tests]
     branches:
       - main
+    types:
+      - completed
 jobs:
   deploy:
     name: Deploy app
