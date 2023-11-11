@@ -1,6 +1,7 @@
 name: Deploy to Fly
 on:
-  push:
+  workflow_run:
+    workflows: [Tests]
     branches:
       - main
 jobs:
