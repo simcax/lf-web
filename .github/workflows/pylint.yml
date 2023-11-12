@@ -23,7 +23,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pylint pytest
-        pip install -r requirements.txt -r requirements-dev.text
+        pip install -r requirements.txt -r requirements-dev.txt
     - name: Analysing the code with pylint
       run: |
         pylint --fail-under=9 $(git ls-files '*.py')
