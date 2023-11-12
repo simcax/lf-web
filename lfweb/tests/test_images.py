@@ -7,5 +7,5 @@ def test_get_logo(redis_container, client):
     """
     Test to retrieve the logo image
     """
-    response = client.get("/images/logo.png")
+    response = client.get("/static/images/logo.png")
     assert response.status_code == 200
