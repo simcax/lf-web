@@ -1,5 +1,7 @@
-from flask import Blueprint, render_template, send_from_directory
-from loguru import logger
+"""
+Routes for images
+"""
+from flask import Blueprint, send_from_directory
 
 bp = Blueprint("images", __name__, url_prefix="/static/images")
 

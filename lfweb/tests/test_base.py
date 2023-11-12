@@ -1,3 +1,8 @@
+"""
+Basic tests for the base app
+"""
+
+
 def test_instantiate(redis_container, client):
     """Test the App loads and there is access to the main route"""
     response = client.get("/")

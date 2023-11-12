@@ -1,3 +1,7 @@
+"""
+Configuration for pytest
+"""
+
 from os import environ
 
 import pytest

@@ -37,8 +37,10 @@ def create_app(test_config=None):
         sess.init_app(app)
         # app.register_blueprint(some_route.bp1)
 
-        from lfweb.main import bp as main_bp
-        from lfweb.main.images import bp as images_bp
+        from lfweb.main import bp as main_bp  # pylint: disable=import-outside-toplevel
+        from lfweb.main.images import (
+            bp as images_bp,
+        )  # pylint: disable=import-outside-toplevel
 
         app.register_blueprint(main_bp)
         app.register_blueprint(images_bp)

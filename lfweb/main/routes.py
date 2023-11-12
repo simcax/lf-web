@@ -1,3 +1,6 @@
+"""
+Routes for core pages
+"""
 from flask import render_template
 from loguru import logger
 
