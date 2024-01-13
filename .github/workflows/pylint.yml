@@ -8,11 +8,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python-version: ["3.11.5"] 
+        python-version: ["3.11.5", "3.12.1"] 
         experimental: [false]
-        include:
-          - version: "3.12.0"
-            experimental: true
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
