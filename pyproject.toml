@@ -20,6 +20,7 @@ black = "^23.12.1"
 docker = "^7.0.0"
 pytest = "^7.4.4"
 testcontainers-redis = "^0.0.1rc1"
+pylint = "^3.0.3"
 
 [build-system]
 requires = ["poetry-core"]
