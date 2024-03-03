@@ -1,9 +1,16 @@
 """Lejre Fitness Website - Flask App"""
+
 from os import environ, urandom
 
 import redis
 from flask import Flask  # , render_template, send_from_directory, session
 from flask_session import Session
+
+from lfweb.main import (  # pylint: disable=import-outside-toplevel
+    frontpage_bp,
+    images_bp,
+    pages_bp,
+)
 
 # from .routes import ()
 
@@ -37,13 +44,10 @@ def create_app(test_config=None):
         sess.init_app(app)
         # app.register_blueprint(some_route.bp1)
 
-        from lfweb.main import bp as main_bp  # pylint: disable=import-outside-toplevel
-        from lfweb.main.images import (
-            bp as images_bp,
-        )  # pylint: disable=import-outside-toplevel
-
-        app.register_blueprint(main_bp)
+        app.register_blueprint(frontpage_bp)
         app.register_blueprint(images_bp)
+        app.register_blueprint(pages_bp)
 
         app.logger.info("App routes loaded")
+        app.logger.info(app.url_map)
         return app

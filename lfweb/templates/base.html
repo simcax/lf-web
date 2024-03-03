@@ -7,7 +7,21 @@
   <title>Lejre Fitness - Dit fintesscenter i lokalområdet</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  <!-- For focusing elements in the dropdown menu -->
+  <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.x.x/dist/cdn.min.js"></script>
   <script src="https://unpkg.com/alpinejs" defer></script>
+  <script>
+    tailwind.config = {
+      module:
+        exports = {
+          content: [
+            "./templates/**/*.html",
+            // There are some Tailwind classes embedded in the Markdown extension.
+            "./lfweb/pages/tailwind.py",
+          ],
+        }
+    }
+  </script>
 </head>
 
 <body>
