@@ -27,6 +27,14 @@ jobs:
       run: |
         poetry run black --check .
     - name: Test code
+      env:
+        REDIS_URL: redis://localhost:6379
+        API_USERNAME: ${{ secrets.API_USERNAME }}
+        API_PASSWORD: ${{ secrets.API_PASSWORD }}
+        API_BASE_URL: ${{ env.API_BASE_URL }}
+        API_VERSION: ${{ env.API_VERSION }}
+        API_MEMBERS_API: ${{ env.API_MEMBERS_API }}
+        API_ACTIVITIES_API: ${{ env.API_ACTIVITIES_API }}
       run: |
         poetry run pytest .
     services:
