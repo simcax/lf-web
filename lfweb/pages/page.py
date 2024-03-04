@@ -1,8 +1,7 @@
 """Module for the Page class."""
-import markdown
-import yaml
 
-# from markupsafe import Markup
+import markdown
+
 from .tailwind import TailwindExtension
 
 

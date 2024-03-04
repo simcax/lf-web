@@ -14,4 +14,3 @@ class Memberdata:
         fl_obj = ForeningLet()
         memberlist = fl_obj.get_memberlist()
         self.members = Memberlist(memberlist)
-        self.members = Memberlist(memberlist)
