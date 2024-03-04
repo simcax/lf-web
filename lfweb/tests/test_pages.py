@@ -18,7 +18,7 @@ def test_render_page():
     content = "This is a test page."
     page = Page("TestPage.md", "TestPage")
     page.create(content)
-    assert page.render() == "<p>This is a test page.</p>"
+    assert page.render() == '<p class="pb-4 text-normal">This is a test page.</p>'
 
 
 def test_get_page_from_endpoint(client):

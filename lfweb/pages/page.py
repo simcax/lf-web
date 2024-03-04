@@ -34,4 +34,3 @@ class Page:
         """Create a page."""
         with open(self.md_file, "w", encoding="utf-8") as file:
             file.write(content)
-            file.write(content)
