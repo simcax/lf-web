@@ -29,3 +29,8 @@ jobs:
     - name: Test code
       run: |
         poetry run pytest .
+    services:
+      # Add a redis container as a service for the pytest job
+      redis:
+        image: redis
+        
