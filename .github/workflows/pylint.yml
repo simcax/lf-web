@@ -28,7 +28,7 @@ jobs:
         poetry run black --check .
     - name: Test code
       env:
-        REDIS_URL: redis://localhost:6379
+        REDIS_HOST: redis
         API_USERNAME: ${{ secrets.API_USERNAME }}
         API_PASSWORD: ${{ secrets.API_PASSWORD }}
         API_BASE_URL: ${{ env.API_BASE_URL }}
