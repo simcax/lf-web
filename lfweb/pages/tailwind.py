@@ -22,7 +22,7 @@ class TailwindTreeProcessor(Treeprocessor):
         "h2": "text-3xl",
         "h3": "text-2xl",
         "h4": "text-xl",
-        "code": "font-sans indent-1 italic border-spacing-x-2 rounded-xl bg-white-200 shadow-md shadow-white-500/50",
+        "code": "font-sans indent-1 italic border-spacing-x-2 rounded-xl bg-white-200 shadow-md shadow-white-500/50",  # pylint: disable=line-too-long
         "img": "rounded-lg size-64",
     }
 

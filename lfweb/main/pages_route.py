@@ -1,3 +1,5 @@
+"""Module for handling the pages automatically from config file"""
+
 from flask import Blueprint, render_template
 from loguru import logger
 

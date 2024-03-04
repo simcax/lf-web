@@ -1,8 +1,5 @@
 """Tests for the pages module."""
 
-import pytest
-import yaml
-
 from lfweb.pages.index import IndexHandling
 from lfweb.pages.page import Page
 

@@ -1,5 +1,4 @@
 """Class for index handling."""
-from pathlib import Path
 
 import yaml
 
