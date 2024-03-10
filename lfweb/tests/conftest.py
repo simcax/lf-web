@@ -25,7 +25,7 @@ def redis_container():
 
 
 @pytest.fixture
-def client():
+def client(redis_container):
     """Providess a client to test with"""
     logger.info("Starting test client")
     redis_port = environ.get("REDIS_PORT", "6379")
