@@ -3,6 +3,7 @@
 from flask import Blueprint, render_template
 from loguru import logger
 
+from lfweb.members.list import Memberdata
 from lfweb.pages.index import IndexHandling
 from lfweb.pages.page import Page
 
@@ -19,6 +20,7 @@ def pages(page: str, sub_page: str = None) -> str:
     index_file = "lfweb/pages/current_pages.yaml"  # TODO: Move to config
     index = IndexHandling(index_file)
     index.load_index()
+    memberdata = Memberdata()
     if sub_page:
         page_name = f"{page}/{sub_page}"
         logger.debug(f"Loading sub page: {page_name} and sub_page: {sub_page}")
@@ -40,4 +42,5 @@ def pages(page: str, sub_page: str = None) -> str:
         title=title,
         page_content=page_content.render(),
         pages=index.index,
+        memberdata=memberdata,
     )

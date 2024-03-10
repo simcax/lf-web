@@ -21,7 +21,7 @@ class Page:
             return markdown.markdown(
                 md,
                 output_format="html5",
-                extensions=[TailwindExtension()],
+                extensions=[TailwindExtension(), "tables", "nl2br"],
                 # md = md.replace("<h1>", "<h1 class='text-lg'>")
                 # return Markup(
                 #     markdown.markdown(md, output_format="html5"),

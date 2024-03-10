@@ -23,7 +23,11 @@ class TailwindTreeProcessor(Treeprocessor):
         "h3": "text-2xl",
         "h4": "text-xl",
         "code": "font-sans indent-1 italic border-spacing-x-2 rounded-xl bg-white-200 shadow-md shadow-white-500/50",  # pylint: disable=line-too-long
-        "img": "rounded-lg size-64",
+        "img": "rounded-lg size-64 shadow-md shadow-white-500/50",
+        "table": "table-auto table-spacing-1 border-2 border-lime-600 rounded-lg ring-green-950 w-full justify-start",
+        "td": "border-black-500 p-4 justify-center place-items-center",
+        "tr": "space-x-4",
+        "th": "border-black-500 p-4 justify-center font-bold",
     }
 
     def run(self, root):

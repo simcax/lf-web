@@ -16,3 +16,10 @@ def test_member_count():
     """Test that we can retrieve a member count"""
     memberdata = Memberdata()
     assert memberdata.members.member_count >= 1
+
+
+@pytest.mark.vcr()
+def test_members_total():
+    """Test that we can retrieve a member count"""
+    memberdata = Memberdata()
+    assert memberdata.members.member_count >= 1

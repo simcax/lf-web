@@ -13,10 +13,13 @@ Du kan derfor give input til hvad du ønsker at se af udstyr og maskiner, og det
 
 ## Styrketræning
 
-Adjustable v pulley ![/images/pulley.png](/static/images/adjustable-v-pulley-500x509.png "pulley")
 
 
-Den alsidige maskine til styrketræning af nærmest alle muskelgrupper. Maskinen kan indstilles på et utal af måder, og kan bruges næsten så kun fantasien sætter grænsen.
+ Maskiner | Billede  
+----------|----------
+Den alsidige maskine til styrketræning af nærmest alle muskelgrupper. Maskinen kan indstilles på et utal af måder, og kan bruges næsten så kun fantasien sætter grænsen.| ![/images/pulley.png](/static/images/adjustable-v-pulley-500x509.png "pulley") <div class="text-center">Adjustable V Pulley</div><div class="italic text-center">Kabelt&aring;rn</div>
+
+
 Lat Pulldown
 Lat Pulldown
 

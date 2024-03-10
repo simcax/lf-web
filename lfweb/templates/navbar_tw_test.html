@@ -1,11 +1,10 @@
-<div>
-    <a href="/">
-        <img src="{{ url_for('static', filename='images/logo.png') }}" height="125" width="250">
-    </a>
-</div>
-<nav class="flex justify-center bg-lime-500">
-
-    <ul class="flex flex-wrap items-center font-medium text-sm">
+<nav class="flex">
+    <div class="justify-left">
+        <a href="/">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" height="125" width="250">
+        </a>
+    </div>
+    <ul class="flex flex-wrap items-center font-medium text-sm bg-lime-500">
 
         {% for page in pages %}
 
