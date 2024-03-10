@@ -37,6 +37,7 @@ jobs:
         API_ACTIVITIES_API: ${{ env.API_ACTIVITIES_API }}
       run: |
         echo "REDIS_HOST: $REDIS_HOST"
+        echo "API_MEMBERS_API: $API_MEMBERS_API"
         poetry run pytest .
     services:
       # Add a redis container as a service for the pytest job
