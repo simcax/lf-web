@@ -25,8 +25,8 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     redis_host = environ.get("REDIS_HOST", "localhost")
     redis_port = environ.get("REDIS_PORT", "6379")
-    logger.info("Redis host: %", redis_host)
-    logger.info("Redis port: %", redis_port)
+    logger.info(f"Redis host: {redis_host}")
+    logger.info(f"Redis port: {redis_port}")
     app.config.from_mapping(
         SECRET_KEY=environ.get("SECRET_KEY", secret_key),
         SESSION_TYPE="redis",
@@ -38,6 +38,7 @@ def create_app(test_config=None):
         SESSION_COOKIE_DOMAIN=environ.get("SESSION_COOKIE_DOMAIN", str("127.0.0.1")),
         SESSION_COOKIE_NAME=environ.get("SESSION_COOKIE_NAME", site_short_name),
     )
+
     print(secret_key)
     if test_config:
         app.logger.info("Test config is set")
