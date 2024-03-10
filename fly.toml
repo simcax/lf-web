@@ -13,6 +13,10 @@ primary_region = "arn"
   PORT = "8080"
   SESSION_COOKIE_DOMAIN = "lf-web.fly.dev"
   SESSION_COOKIE_NAME = "lfweb"
+  API_BASE_URL=https://foreninglet.dk/api/
+  API_VERSION=version=1
+  API_MEMBERS_API=members
+  API_ACTIVITIES_API=activities
 
 [http_service]
   internal_port = 8080
