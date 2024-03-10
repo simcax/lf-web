@@ -3,6 +3,7 @@
 from os import environ, urandom
 
 import redis
+import sentry_sdk
 from flask import Flask  # , render_template, send_from_directory, session
 from flask_session import Session
 from loguru import logger
@@ -14,12 +15,23 @@ from lfweb.main import (  # pylint: disable=import-outside-toplevel
 )
 
 # from .routes import ()
+sentry_sdk.init(
+    dsn="https://f90b2619be9af44f465a5b48a7135f31@o4505902934130688.ingest.us.sentry.io/4505902934261760",
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    traces_sample_rate=1.0,
+    # Set profiles_sample_rate to 1.0 to profile 100%
+    # of sampled transactions.
+    # We recommend adjusting this value in production.
+    profiles_sample_rate=1.0,
+)
 
 
 def create_app(test_config=None):
     # Disabling no-member, since app.logger comes from the flask framework
     # pylint: disable=no-member
     """App factory"""
+
     site_short_name = "lf-web"
     secret_key = str(urandom(12).hex())
     app = Flask(__name__, instance_relative_config=True)
