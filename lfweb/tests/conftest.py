@@ -5,6 +5,7 @@ Configuration for pytest
 from os import environ
 
 import pytest
+from loguru import logger
 from testcontainers.redis import RedisContainer
 
 from lfweb import create_app
@@ -24,8 +25,13 @@ def redis_container():
 
 
 @pytest.fixture
-def client():
+def client(redis_container):
     """Providess a client to test with"""
+    logger.info("Starting test client")
+    redis_port = environ.get("REDIS_PORT", "6379")
+    redis_host = environ.get("REDIS_HOST", "localhost")
+    logger.info(f"Redis host: {redis_host}")
+    logger.info(f"Redis port: {redis_port}")
     app = create_app()
 
     # This will create a redics container on localhost
