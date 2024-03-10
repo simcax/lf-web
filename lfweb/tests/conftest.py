@@ -6,6 +6,7 @@ from os import environ
 
 import pytest
 from loguru import logger
+from testcontainers.postgres import PostgresContainer
 from testcontainers.redis import RedisContainer
 
 from lfweb import create_app
@@ -41,3 +42,23 @@ def client(redis_container):
             # None
             pass
         yield app_client
+
+
+@pytest.fixture(scope="module", autouse=True)
+def postgres_container(request):
+    """
+    Start a postgres container
+    """
+    postgres = PostgresContainer("postgres:16-alpine")
+    postgres.start()
+
+    def remove_container():
+        postgres.stop()
+
+    request.addfinalizer(remove_container)
+    environ["DB_CONN"] = postgres.get_connection_url()
+    environ["DB_HOST"] = postgres.get_container_host_ip()
+    environ["DB_PORT"] = postgres.get_exposed_port(5432)
+    environ["DB_USERNAME"] = postgres.POSTGRES_USER
+    environ["DB_PASSWORD"] = postgres.POSTGRES_PASSWORD
+    environ["DB_NAME"] = postgres.POSTGRES_DB
