@@ -31,10 +31,10 @@ jobs:
         REDIS_HOST: redis
         API_USERNAME: ${{ secrets.API_USERNAME }}
         API_PASSWORD: ${{ secrets.API_PASSWORD }}
-        API_BASE_URL: ${{ env.API_BASE_URL }}
-        API_VERSION: ${{ env.API_VERSION }}
-        API_MEMBERS_API: ${{ env.API_MEMBERS_API }}
-        API_ACTIVITIES_API: ${{ env.API_ACTIVITIES_API }}
+        API_BASE_URL: ${{ vars.API_BASE_URL }}
+        API_VERSION: ${{ vars.API_VERSION }}
+        API_MEMBERS_API: ${{ vars.API_MEMBERS_API }}
+        API_ACTIVITIES_API: ${{ vars.API_ACTIVITIES_API }}
       run: |
         echo "REDIS_HOST: $REDIS_HOST"
         echo "API_MEMBERS_API: $API_MEMBERS_API"
