@@ -43,4 +43,5 @@ jobs:
       # Add a redis container as a service for the pytest job
       redis:
         image: redis
-        
+        ports:
+          - 6379:6379
