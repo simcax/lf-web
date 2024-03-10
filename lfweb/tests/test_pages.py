@@ -1,5 +1,7 @@
 """Tests for the pages module."""
 
+from pathlib import Path
+
 from lfweb.pages.index import IndexHandling
 from lfweb.pages.page import Page
 
@@ -30,5 +32,7 @@ def test_get_page_from_endpoint(client):
     index = IndexHandling(index_file)
     index.add("TestPage.md", "TestPage", "/pages/TestPage")
     response = client.get("/pages/TestPage")
+    test_page = Path("TestPage.md")
+    assert test_page.exists()
     assert response.status_code == 200
     assert content in response.data.decode("utf-8")
