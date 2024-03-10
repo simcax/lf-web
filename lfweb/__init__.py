@@ -24,6 +24,8 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     redis_host = environ.get("REDIS_HOST", "localhost")
     redis_port = environ.get("REDIS_PORT", "6379")
+    app.logger.info("Redis host: %", redis_host)
+    app.logger.info("Redis port: %", redis_port)
     app.config.from_mapping(
         SECRET_KEY=environ.get("SECRET_KEY", secret_key),
         SESSION_TYPE="redis",
