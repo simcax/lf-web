@@ -29,6 +29,7 @@ jobs:
     - name: Test code
       env:
         REDIS_HOST: redis
+        REDIS_PORT: 6379
         API_USERNAME: ${{ secrets.API_USERNAME }}
         API_PASSWORD: ${{ secrets.API_PASSWORD }}
         API_BASE_URL: ${{ vars.API_BASE_URL }}
