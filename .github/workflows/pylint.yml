@@ -26,6 +26,13 @@ jobs:
     - name: Black validation
       run: |
         poetry run black --check .
+    - name: Debug poetry env info
+      env: 
+        REDIS_HOST: redis
+        REDIS_PORT: 6379
+      run: |
+        poetry env info
+        poetry run echo "REDIS_HOST: $REDIS_HOST"
     - name: Test code
       env:
         REDIS_HOST: redis
@@ -39,6 +46,8 @@ jobs:
       run: |
         echo "REDIS_HOST: $REDIS_HOST"
         echo "API_MEMBERS_API: $API_MEMBERS_API"
+        poetry run echo "REDIS_HOST: $REDIS_HOST"
+        poetry run echo "REDIS_PORT: $REDIS_PORT"
         poetry run pytest -s .
     services:
       # Add a redis container as a service for the pytest job
