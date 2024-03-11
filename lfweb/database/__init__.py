@@ -1,1 +1,1 @@
-from .connection import Database
+from .connection import Database, GetDbConnection
