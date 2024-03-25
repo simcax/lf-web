@@ -3,26 +3,27 @@
 {% block content %}
 <h1>{% block title %}{% endblock %}</h1>
 
-<div class="">
-    <div>
+<div class="border-5 border-lime-300">
+    <div class="grow">
         {% include 'navbar_tw_test.html' %}
     </div>
-    <div class="sm:flex">
-        <div class=" justify-center text-center"> <iframe name="Antal medlemmer i bygningen"
+    <div class=" sm:flex">
+        <div class=" justify-center text-center p-2"> <iframe name="Antal medlemmer i bygningen"
                 src="https://www.foreninglet.dk/main/inbuildingcount/3196/f18e67" frameborder="0" scrolling="auto"
                 width="200" height="300" marginwidth="5" marginheight="5" allowtransparency="true"
-                class="justify-center text-center"> </iframe> </div>
-        <div class="sm:grow">
+                class="justify-center text-center border-2 border-lime-300"> </iframe> </div>
+        <div class=" sm:grow">
             {% include 'membership_tw.html' %}
         </div>
         <div class="text-center p-2">
-            <div class="border-2 rounded-md border-lime-300">
-                Antal medlemmer: <br>
+            <div class="border-2 rounded-md border-lime-300 outline outline-lime-600">
+                <div class="bg-lime-300 text-neutral-50 text-2xl font-bold">Antal medlemmer</div>
                 <div class="text-3xl text-lime-700 bold p-2">{{ memberdata.members.genuine_member_count }}
                 </div>
             </div>
-            <div class="border-2 rounded-md border-lime-300">
-                Nye medlemmer i denne måned: <br>
+            <div class="border-2 rounded-md border-lime-300 outline outline-lime-600">
+                <div class="bg-lime-300 text-neutral-50 text-2xl font-bold">Nye medlemmer <br />i denne måned:
+                </div>
                 <div class="text-3xl text-lime-700 bold">{{ memberdata.members.new_members_current_month }}
                 </div>
             </div>
