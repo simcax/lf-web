@@ -1,11 +1,10 @@
 """Tests for database integration"""
 
 import os
-from tempfile import TemporaryDirectory
 
 from psycopg import Connection
 
-from lfweb.database.connection import DbConnectionCredentials, GetDbConnection
+from lfweb.database.connection import GetDbConnection
 
 
 def test_create_db_connection_credentials_from_env_vars(postgres_container, db_creds):

@@ -4,6 +4,10 @@ dist
 .pids
 .pants.workdir.file_lock
 
+# Div. files
+*.log
+local
+
 # IDEs
 .vscode
 

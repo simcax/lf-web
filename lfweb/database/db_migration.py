@@ -44,7 +44,7 @@ class DatabaseMigration:
     def create_table_pages(self):
         """Create the pages table"""
         metadata = MetaData()
-        pages = Table(
+        pages = Table(  # noqa: F841
             "pages",
             metadata,
             Column("id", Integer, primary_key=True),
@@ -53,7 +53,7 @@ class DatabaseMigration:
             Column("url", String),
             Column("sub_page", Boolean, default=False),
         )
-        index = Table(
+        index = Table(  # noqa: F841
             "index",
             metadata,
             Column("id", Integer, primary_key=True),
@@ -65,10 +65,19 @@ class DatabaseMigration:
     def create_table_index(self):
         """Create the index table"""
         metadata = MetaData()
-        index = Table(
+        index = Table(  # noqa: F841
             "index",
             metadata,
             Column("id", Integer, primary_key=True),
             Column("pages_id", ForeignKey("pages.id")),
         )
         metadata.create_all(self.engine)
+
+    def drop_tables(self):
+        """Drop the tables"""
+        metadata = MetaData()
+        pages = Table("pages", metadata)  # noqa: F841
+        index = Table("index", metadata)  # noqa: F841
+        metadata.drop_all(self.engine)
+        self.connection.commit()
+        print("Tables dropped successfully")

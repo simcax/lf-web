@@ -20,9 +20,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install poetry
         poetry install --with dev
-    - name: Analysing the code with pylint
+    - name: Analysing the code with ruff
       run: |
-        poetry run pylint --fail-under=9 $(git ls-files '*.py')
+        poetry run ruff check .
     - name: Black validation
       run: |
         poetry run black --check .

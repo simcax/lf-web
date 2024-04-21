@@ -10,10 +10,11 @@ from testcontainers.postgres import PostgresContainer
 from testcontainers.redis import RedisContainer
 
 from lfweb import create_app
-from lfweb.database.connection import Database, GetDbConnection
+from lfweb.database.connection import DbConnectionCredentials
+from lfweb.database.db_migration import DatabaseMigration
 
 
-@pytest.fixture
+@pytest.fixture(scope="package")
 def redis_container():
     """
     Start a redis container
@@ -60,11 +61,37 @@ def postgres_container(request):
     environ["DB_PASSWORD"] = postgres.POSTGRES_PASSWORD
     environ["DB_NAME"] = postgres.POSTGRES_DB
     environ["DB_URI"] = postgres.get_connection_url()
-    db_engine = Database()
 
-    yield db_engine
+    yield postgres
 
     def remove_container():
         postgres.stop()
 
     request.addfinalizer(remove_container)
+
+
+@pytest.fixture
+def init_db():
+    """
+    Initialize the database
+    """
+    db = DatabaseMigration()
+    db.create_database()
+    with db.connection as conn:  # noqa F841
+        db.run_migrations()
+    yield db
+    db.drop_tables()
+
+
+@pytest.fixture
+def db_creds():
+    """Fixture for database credentials"""
+    db_creds = DbConnectionCredentials(
+        host=environ.get("DB_HOST"),
+        port=environ.get("DB_PORT"),
+        username=environ.get("DB_USERNAME"),
+        password=environ.get("DB_PASSWORD"),
+        database=environ.get("DB_NAME"),
+        db_uri=environ.get("DB_URI"),
+    )
+    return db_creds

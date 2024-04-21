@@ -1,10 +1,11 @@
 """Test for setting up the database migrations"""
 
-import sqlalchemy
 from sqlalchemy import text
 
 from lfweb.database.db_migration import DatabaseMigration
-from lfweb.pages.database import PagesDatabaseHandling
+
+
+# from lfweb.pages.database import PagesDatabaseHandling
 
 
 def test_create_database_migration_object():
