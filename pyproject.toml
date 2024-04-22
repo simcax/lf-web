@@ -32,6 +32,7 @@ testcontainers-redis = "^0.0.1rc1"
 pylint = "^3.0.3"
 pytest-cov = "^4.1.0"
 testcontainers-postgres = "^0.0.1rc1"
+ruff = "^0.4.1"
 
 [build-system]
 requires = ["poetry-core"]
