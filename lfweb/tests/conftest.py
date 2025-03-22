@@ -5,10 +5,13 @@ Configuration for pytest
 from os import environ
 
 import pytest
+from dotenv import load_dotenv
 from loguru import logger
 from testcontainers.redis import RedisContainer
 
 from lfweb import create_app
+
+load_dotenv()
 
 
 @pytest.fixture
