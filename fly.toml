@@ -11,7 +11,6 @@ dockerfile = "docker/Dockerfile"
 
 [env]
   PORT = "8080"
-  SESSION_COOKIE_DOMAIN = "lf-web.fly.dev"
   SESSION_COOKIE_NAME = "lfweb"
   API_BASE_URL = "https://foreninglet.dk/api/"
   API_VERSION = "version=1"
