@@ -7,7 +7,7 @@ app = "lf-web"
 primary_region = "arn"
 
 [build]
-  builder = "paketobuildpacks/builder:base"
+dockerfile = "docker/Dockerfile"
 
 [env]
   PORT = "8080"
