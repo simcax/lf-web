@@ -1,18 +1,38 @@
-name: Deploy to Fly
+
+name: Fly Deploy
 on:
-  workflow_run:
-    workflows: [Tests]
+  push:
     branches:
       - main
-    types:
-      - completed
+
+env:
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  # Set these to your Fly.io organization and preferred region.
+  FLY_REGION: fra
+  FLY_ORG: personal
+
 jobs:
-  on-success:
+  deploy:
     name: Deploy app
     runs-on: ubuntu-latest
+    concurrency: deploy-group    # optional: ensure only one action runs at a time
+
+    environment:
+      name: production
+      url: ${{ steps.deploy.outputs.url }}
+
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Setup Python
+        run: uv python install
+      - name: Install the project
+        run: uv sync --all-extras --dev
+      - name: Update fly.toml with version
+        run: |
+          uv run python utils/update_fly_toml.py
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - run: flyctl deploy --remote-only
         env:
-          FLY_API_TOKEN: ${{ secrets.FLY_DEPLOY_TOKEN }}
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
