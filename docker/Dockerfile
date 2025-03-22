@@ -13,6 +13,7 @@ COPY uv.lock .
 
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+COPY README.md .
 
 # Install the dependencies using uv
 RUN uv venv
@@ -27,7 +28,6 @@ WORKDIR /app
 
 # Copy the application code
 COPY ./lfweb ./lfweb
-COPY README.md .
 
 # Copy the dependencies from the builder image
 COPY --from=builder /app/.venv /app/.venv
