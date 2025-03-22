@@ -1,4 +1,5 @@
 """Initialize application factory"""
+
 from lfweb import create_app
 
 app = create_app()
