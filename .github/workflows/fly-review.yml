@@ -59,4 +59,4 @@ jobs:
               API_PASSWORD=${{ secrets.API_PASSWORD }}
               ENVIRONMENT_NAME=${{ secrets.ENVIRONMENT_NAME }}
               REDIS_HOST=${{ secrets.REDIS_HOST }}
-              SESSION_COOKIE_DOMAIN=${{ steps.deploy.outputs.url  }}
+              SESSION_COOKIE_DOMAIN=${{ steps.modify-url.outputs.url }}
