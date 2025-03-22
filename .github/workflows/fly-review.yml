@@ -48,4 +48,4 @@ jobs:
         id: deploy
         uses: superfly/fly-pr-review-apps@1.2.1
         with:
-            secrets: API_USERNAME=${{ secrets.API_USERNAME }} API_PASSWORD=${{ secrets.API_PASSWORD }} WEB_TEXT_TICKER_LINK_ID=${{ secrets.WEB_TEXT_TICKER_LINK_ID }} ENVIRONMENT_NAME=${{ secrets.ENVIRONMENT_NAME }}
+            secrets: API_USERNAME=${{ secrets.API_USERNAME }} API_PASSWORD=${{ secrets.API_PASSWORD }} ENVIRONMENT_NAME=${{ secrets.ENVIRONMENT_NAME }} REDIS_HOST=${{ secrets.REDIS_HOST }} 
