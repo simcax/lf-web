@@ -1,15 +1,19 @@
+"""Utility script to update the version in fly.toml with the current git sha."""
+
 import subprocess
 
 import toml
 
 
 def get_version():
+    """Get the version from pyproject.toml"""
     with open("pyproject.toml", "r") as f:
         pyproject = toml.load(f)
     return pyproject["project"]["version"]
 
 
 def get_git_sha():
+    """Get the short git sha"""
     result = subprocess.run(
         ["git", "rev-parse", "--short", "HEAD"], stdout=subprocess.PIPE
     )
@@ -17,7 +21,8 @@ def get_git_sha():
 
 
 def update_fly_toml(full_version):
-    with open("fly.toml", "r") as f:
+    """Update the fly.toml with the new version"""
+    with open("fly.toml", "r", encoding="utf-8") as f:
         fly_config = toml.load(f)
 
     fly_config["env"]["VERSION"] = full_version
