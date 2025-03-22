@@ -35,6 +35,12 @@ jobs:
         run: uv python install
       - name: Install the project
         run: uv sync --all-extras
+      - name: Analysing the code with pylint
+        run: |
+          uv run pylint --fail-under=9 $(git ls-files '*.py')
+      - name: Black validation
+        run: |
+          uv run black --check .
       - name: Update fly.toml with version
         run: |
           uv run python utils/update_fly_toml.py
