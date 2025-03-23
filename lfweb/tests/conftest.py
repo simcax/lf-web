@@ -5,6 +5,7 @@ Configuration for pytest
 from os import environ
 
 import pytest
+from dotenv import load_dotenv
 from loguru import logger
 from testcontainers.postgres import PostgresContainer
 from testcontainers.redis import RedisContainer
@@ -12,6 +13,8 @@ from testcontainers.redis import RedisContainer
 from lfweb import create_app
 from lfweb.database.connection import DbConnectionCredentials
 from lfweb.database.db_migration import DatabaseMigration
+
+load_dotenv()
 
 
 @pytest.fixture(scope="package")

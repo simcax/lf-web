@@ -1,5 +1,6 @@
 """Lejre Fitness Website - Flask App"""
 
+from datetime import timedelta
 from os import environ, urandom
 
 import redis
@@ -7,6 +8,7 @@ import sentry_sdk
 from flask import Flask  # , render_template, send_from_directory, session
 from flask_session import Session
 from loguru import logger
+from werkzeug.http import dump_cookie
 
 from lfweb.main import (  # pylint: disable=import-outside-toplevel
     frontpage_bp,
@@ -47,8 +49,10 @@ def create_app(test_config=None):
         SESSION_USE_SIGNER=True,
         SESSION_COOKIE_SECURE=False,
         SESSION_COOKIE_SAMESITE="Strict",
-        SESSION_COOKIE_DOMAIN=environ.get("SESSION_COOKIE_DOMAIN", str("127.0.0.1")),
-        SESSION_COOKIE_NAME=environ.get("SESSION_COOKIE_NAME", site_short_name),
+        SESSION_COOKIE_DOMAIN=str(environ.get("SESSION_COOKIE_DOMAIN", "127.0.0.1")),
+        SESSION_COOKIE_NAME=str(environ.get("SESSION_COOKIE_NAME", site_short_name)),
+        SESSION_COOKIE_HTTPONLY=True,  # Prevents JavaScript access to cookies
+        PERMANENT_SESSION_LIFETIME=timedelta(days=14),  # Controls session expiration
     )
 
     print(secret_key)

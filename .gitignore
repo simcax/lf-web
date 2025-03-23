@@ -1,8 +1,5 @@
-# pants files
-.pants.d
-dist
-.pids
-.pants.workdir.file_lock
+# env files
+.env
 
 # Div. files
 *.log
