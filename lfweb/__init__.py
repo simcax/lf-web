@@ -1,5 +1,6 @@
 """Lejre Fitness Website - Flask App"""
 
+from datetime import timedelta
 from os import environ, urandom
 
 import redis
@@ -50,6 +51,8 @@ def create_app(test_config=None):
         SESSION_COOKIE_SAMESITE="Strict",
         SESSION_COOKIE_DOMAIN=str(environ.get("SESSION_COOKIE_DOMAIN", "127.0.0.1")),
         SESSION_COOKIE_NAME=str(environ.get("SESSION_COOKIE_NAME", site_short_name)),
+        SESSION_COOKIE_HTTPONLY=True,  # Prevents JavaScript access to cookies
+        PERMANENT_SESSION_LIFETIME=timedelta(days=14),  # Controls session expiration
     )
 
     print(secret_key)
