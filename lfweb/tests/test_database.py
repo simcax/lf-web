@@ -2,7 +2,7 @@
 
 import os
 
-from psycopg import Connection
+from psycopg2.extensions import connection as Connection
 
 from lfweb.database.connection import GetDbConnection
 

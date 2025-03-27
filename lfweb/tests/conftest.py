@@ -98,3 +98,18 @@ def db_creds():
         db_uri=environ.get("DB_URI"),
     )
     return db_creds
+
+
+@pytest.fixture
+def doorcount_html():
+    """Fixture for doorcount HTML"""
+    return """
+    <html>
+<head>
+	<title>Antal medlemmer i bygning</title>
+	<meta http-equiv="refresh" content="300">
+</head>
+<body>
+	<b>Ankommet for tid siden:</b><br/>90 minutter: 1<br/>75 minutter: 3<br/>60 minutter: 3<br/>45 minutter: 3<br/>30 minutter: 0<br/>15 minutter: 2<br/><br/><i>Senest opdateret: 24. marts 2025, kl. 11:06</i>
+</body>
+</html>"""

@@ -3,7 +3,7 @@
 import os
 from typing import Any
 
-import psycopg
+import psycopg2 as psycopg
 from loguru import logger
 from pydantic import BaseModel, model_validator
 

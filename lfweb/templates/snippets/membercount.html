@@ -1,0 +1,21 @@
+<div class="p-0 max-w-md mx-auto">
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+
+        <div class="border-2 rounded-md outline">
+            <div class="bg-lime-300/20 text-lg font-semibold text-gray-800 px-2">
+                Antal medlemmer
+            </div>
+            <div class="text-xl text-lime-700 bold p-2">
+                {{ memberdata.members.genuine_member_count }}
+            </div>
+        </div>
+        <div class="border-2 rounded-md outline px-2">
+            <div class="bg-lime-300/20 text-lg font-semibold text-gray-800 px-2">
+                Nye medlemmer i denne måned
+            </div>
+            <div class="text-xl text-lime-700 bold">
+                {{ memberdata.members.new_members_current_month }}
+            </div>
+        </div>
+    </div>
+</div>
