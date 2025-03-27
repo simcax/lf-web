@@ -7,23 +7,59 @@
     <div class="grow">
         {% include 'navbar_tw_test.html' %}
     </div>
-    <div class="flex w-full items-start">
-        <!-- Left side: Doorcount -->
-        <div class="p-2"> 
-            <div id="doorcount-loading-indicator" class="text-center htmx-indicator">
-                <div class="spinner"></div>
+    <div class="flex flex-col lg:flex-row w-full">
+        <!-- Original three-panel layout -->
+        <div class="flex flex-col md:flex-row lg:flex-grow">
+            <!-- Left side: Doorcount (collapsible on mobile) -->
+            <div class="w-full md:w-64 md:min-w-64 md:flex-shrink-0">
+                <button class="md:hidden w-full bg-lime-500 text-white py-2 px-4 rounded flex justify-between items-center mb-2" 
+                        onclick="togglePanel('doorcount-panel')">
+                    <span>Besøgende</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <div id="doorcount-panel" class="hidden md:block p-2">
+                    <div id="doorcount-loading-indicator" class="text-center htmx-indicator">
+                        <div class="spinner"></div>
+                    </div>
+                    <div id="doorcount" hx-swap="innerHTML" hx-get="/doorcount" hx-trigger="load, every 60s" hx-indicator="#doorcount-loading-indicator"></div>
+                </div>
             </div>
-            <div id="doorcount" hx-swap="innerHTML" hx-get="/doorcount" hx-trigger="load, every 60s" hx-indicator="#doorcount-loading-indicator">
-                <!-- <div hx-get="/doorcount" hx-swap="innerHTML" hx-trigger="load"></div> -->
+
+            <!-- Center: Memberships -->
+            <div class="px-4 w-full md:flex-grow lg:flex-grow ">
+                <div hx-get="/memberships" hx-swap="innerHTML" hx-trigger="load">
+                <!-- Content loaded by HTMX -->
+                </div>
+            </div>
+
+            <!-- Right side: Member counts (collapsible on mobile) -->
+            <div class="w-full md:w-64 md:min-w-64 md:flex-shrink-0">
+                <button class="md:hidden w-full bg-lime-500 text-white py-2 px-4 rounded flex justify-between items-center mb-2"
+                        onclick="togglePanel('membercount-panel')">
+                    <span>Medlemstal</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <div id="membercount-panel" class="hidden md:block p-2" hx-get="/membercount" hx-swap="innerHTML" hx-trigger="load">
+                    <!-- Content loaded by HTMX -->
+                </div>
             </div>
         </div>
 
-        <!-- Center: Memberships -->
-        <div class="flex-1 px-4" hx-get="/memberships" hx-swap="innerHTML" hx-trigger="load">
-            
+        <!-- New content area - will appear below on mobile/tablet and to the right on large screens -->
+        <div class="lg:flex-1 mt-4 lg:mt-0 lg:ml-4">
+            <!-- Add your new content here -->
         </div>
-
-        <!-- Right side: Member counts -->
-        <div class="p-2" hx-get="/membercount" hx-swap="innerHTML" hx-trigger="load"></div>
     </div>
-    {% endblock content %}
+
+    <script>
+        function togglePanel(id) {
+            const panel = document.getElementById(id);
+            panel.classList.toggle('hidden');
+        }
+    </script>
+{% endblock content %}
+</div>
