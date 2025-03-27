@@ -75,8 +75,13 @@
                         <div class="h-0.5 w-12 bg-green-600 mb-4"></div>
                     </div>
                     <div class="rounded-lg overflow-hidden shadow-xl h-full w-full relative">
-                        <div id="activities" class="h-full overflow-y-auto max-h-80" hx-get="https://pr-8-simcax-lf-info.fly.dev/activity_list" hx-swap="innerHTML" hx-trigger="load">
-                            <div class="spinner"></div>
+                        <div id="activities" class="h-full overflow-y-auto max-h-80" 
+                            hx-get="https://pr-8-simcax-lf-info.fly.dev/activity_list" 
+                            hx-swap="innerHTML" 
+                            hx-trigger="load"
+                            hx-headers='{"X-Requested-With": "XMLHttpRequest"}'
+                            hx-indicator=".spinner">
+                            <div class="spinner">Finder Aktiviteter</div>
                         </div>
                     </div>
                 </div>
