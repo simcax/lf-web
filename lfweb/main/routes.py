@@ -35,7 +35,14 @@ def memberships():
     Renders the memberships page
     """
     memberdata = Memberdata()
-    return render_template("snippets/membership_test.html", memberdata=memberdata)
+    activity_list_url = os.environ.get("ACTIVITY_LIST_URL")
+    if activity_list_url is None:
+        logger.warning("ACTIVITY_LIST_URL not set in environment variables")
+    return render_template(
+        "snippets/membership.html",
+        memberdata=memberdata,
+        activity_list_url=activity_list_url,
+    )
 
 
 @frontpage_bp.route("/doorcount")
