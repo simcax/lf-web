@@ -16,6 +16,7 @@ dockerfile = "docker/Dockerfile"
   API_VERSION = "version=1"
   API_MEMBERS_API = "members"
   API_ACTIVITIES_API = "activities"
+  ACTIVITY_LIST_URL = "https://activities.lejre.fitness/activity_list"
 
 [http_service]
   internal_port = 8000
