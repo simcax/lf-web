@@ -4,7 +4,7 @@
 <h1>{% block title %}{% endblock %}</h1>
 
 <div class="border-5 border-lime-300">
-    <div class="grow">
+    <div class="grow w-full">
         {% include 'navbar_tw_test.html' %}
     </div>
     <div class="flex flex-col lg:flex-row w-full">
@@ -54,12 +54,24 @@
             <!-- Add your new content here -->
         </div>
     </div>
-
+    <div class="w-full mt-8 py-4 px-6 bg-gray-100 border-t border-gray-300">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center text-gray-600 text-sm">
+                <div>
+                    <p>Version {{ version }}</p>
+                </div>
+                <div class="mt-2 md:mt-0">
+                    <p>Lejre Fitness, Bispegårdsvej 2, 4320 Lejre</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         function togglePanel(id) {
             const panel = document.getElementById(id);
             panel.classList.toggle('hidden');
         }
     </script>
-{% endblock content %}
+
 </div>
+{% endblock content %}

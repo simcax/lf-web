@@ -23,8 +23,10 @@ def frontpage():
     index = IndexHandling("lfweb/pages/current_pages.yaml")
     index.load_index()
     memberdata = Memberdata()
-
-    return render_template("home.html", pages=index.index, memberdata=memberdata)
+    version = os.environ.get("VERSION")
+    return render_template(
+        "home.html", pages=index.index, memberdata=memberdata, version=version
+    )
 
 
 @frontpage_bp.route("/memberships")
