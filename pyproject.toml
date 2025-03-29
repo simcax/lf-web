@@ -20,6 +20,10 @@ dependencies = [
     "sentry-sdk>=2.8.0",
     "pyyaml>=6.0.2,<7",
     "python-dotenv>=1.0.1,<2",
+    "testcontainers-postgres>=0.0.1rc1",
+    "psycopg2-binary>=2.9.10",
+    "sqlalchemy-utils>=0.41.2",
+    "bs4>=0.0.2",
 ]
 
 [dependency-groups]
@@ -31,4 +35,9 @@ dev = [
     "pylint>=3.0.3,<4",
     "pytest-cov>=4.1.0,<5",
     "toml>=0.10.2",
+]
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: marks tests as integration tests that may require external services",
 ]

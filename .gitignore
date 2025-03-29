@@ -1,6 +1,10 @@
 # env files
 .env
 
+# Div. files
+*.log
+local
+
 # IDEs
 .vscode
 

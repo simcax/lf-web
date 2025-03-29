@@ -60,3 +60,4 @@ jobs:
               ENVIRONMENT_NAME=${{ secrets.ENVIRONMENT_NAME }}
               REDIS_HOST=${{ secrets.REDIS_HOST }}
               SESSION_COOKIE_DOMAIN=${{ steps.modify-url.outputs.url }}
+              DOORCOUNT_URL=${{ secrets.DOORCOUNT_URL}}

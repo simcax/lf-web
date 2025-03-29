@@ -1,0 +1,24 @@
+<div class="p-0 max-w-md mx-auto">
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="bg-lime-300/20 px-4 py-3 border-b">
+            <h2 class="text-lg font-semibold text-gray-800">Medlemmer i lokalet</h2>
+            <p class="text-sm text-gray-600">Sidst opdateret: {{ data.last_updated }}</p>
+        </div>
+        
+        <div class="p-0 px-2">
+            <!-- Header -->
+            <div class="flex border-b px-0 font-medium">
+                <div class="w-2/3 text-left">Tid siden indgang</div>
+                <div class="w-1/3 text-right">Antal</div>
+            </div>
+            
+            <!-- Data rows -->
+            {% for interval, count in data.arrived_intervals.items() %}
+                <div class="flex py-2 px-2 {% if loop.index is odd %}bg-white{% else %}bg-gray-50{% endif %}">
+                    <div class="w-2/3 text-left">{{ interval.replace('_', ' ').replace('minutes','minutter') }}</div>
+                    <div class="w-1/3 text-right font-medium">{{ count }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
