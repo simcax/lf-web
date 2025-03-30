@@ -1,9 +1,12 @@
 """Module for the Page class."""
 
+import os
 from pathlib import Path
 
 import markdown
 from loguru import logger
+
+from lfweb.pages.index import IndexHandling
 
 from .tailwind import TailwindExtension
 
@@ -15,14 +18,15 @@ class Page:
         """Initialize the Page object."""
         self.md_file = md_file
         self.title = title
+        md_file_path = os.environ.get("MD_PATH")
+        # Set the path to the markdown file
+        self.md_file_path = Path(md_file_path, self.md_file)
 
     def render(self):
         """Render the page."""
         try:
-            # Set the path to the markdown file
-            md_file_path = Path("lfweb", "markdown_pages", self.md_file)
             # Read the markdown file
-            with open(md_file_path, encoding="utf-8") as file:
+            with open(self.md_file_path, encoding="utf-8") as file:
                 md = file.read()
             return markdown.markdown(
                 md,
@@ -38,7 +42,17 @@ class Page:
             logger.critical(f"Markdown file path: {md_file_path.name} not found")
             return "Page content not found."
 
-    def create(self, content: str):
+    def create(self, content: str, url: str = None):
         """Create a page."""
-        with open(self.md_file, "w", encoding="utf-8") as file:
-            file.write(content)
+        try:
+            with open(self.md_file_path, "w", encoding="utf-8") as file:
+                file.write(content)
+            logger.info(f"Page {self.md_file} created successfully.")
+            # Update the index
+            index_file = Path(os.environ.get("MD_PATH"), "current_pages.yaml")
+            index = IndexHandling(index_file)
+            index.add(self.md_file, self.title, url)
+        except Exception as e:
+            logger.error(f"Error creating page {self.md_file}: {e}")
+            raise e
+        return self.md_file_path

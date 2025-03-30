@@ -13,6 +13,7 @@ dockerfile = "docker/Dockerfile"
   API_ACTIVITIES_API = "activities"
   ACTIVITY_LIST_URL = "https://activities.lejre.fitness/activity_list"
   VERSION = "0.1.0-aecd15b"
+  MD_PATH= "lfweb/markdown_pages"
 
 [http_service]
   internal_port = 8000

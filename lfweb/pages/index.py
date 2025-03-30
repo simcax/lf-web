@@ -13,8 +13,14 @@ class IndexHandling:
 
     def load_index(self) -> dict:
         """Load the index."""
-        with open(self.index_file, encoding="utf-8") as file:
-            return yaml.load(file, Loader=yaml.FullLoader)
+        try:
+            with open(self.index_file, encoding="utf-8") as file:
+                return yaml.load(file, Loader=yaml.FullLoader)
+        except FileNotFoundError:
+            # If the index file does not exist, create an empty index
+            with open(self.index_file, "w", encoding="utf-8") as file:
+                yaml.dump({}, file)
+            return {}
 
     def add(self, md_file: str, title: str, url) -> None:
         """Add a page to the index."""
