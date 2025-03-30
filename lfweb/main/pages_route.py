@@ -74,13 +74,16 @@ def create_page(pagename: str, sub_page: str = None) -> str:
         url = f"/pages/{pagename}"
     page = Page(f"{pagename}.md", pagename)
     page.create(content, url)
-    return jsonify(
-        {
-            "message": f"Page {md_page_name} created successfully",
-            "url": url,
-            "title": title,
-        }
-    ), 200
+    return (
+        jsonify(
+            {
+                "message": f"Page {md_page_name} created successfully",
+                "url": url,
+                "title": title,
+            }
+        ),
+        200,
+    )
 
 
 @bp.route("/<page>/<sub_page>/edit")
