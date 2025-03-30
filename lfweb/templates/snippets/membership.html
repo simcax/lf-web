@@ -94,3 +94,37 @@
         </div>
     </div>
 </section>
+
+<script>
+    // Simple slideshow functionality
+    let currentSlide = 1;
+    const slide1 = document.getElementById('slide-1');
+    const slide2 = document.getElementById('slide-2');
+    const dot1 = document.getElementById('dot-1');
+    const dot2 = document.getElementById('dot-2');
+    
+    function showSlide(slideNum) {
+        if (slideNum === 1) {
+            slide1.style.opacity = '1';
+            slide2.style.opacity = '0';
+            dot1.style.opacity = '0.8';
+            dot2.style.opacity = '0.5';
+            currentSlide = 1;
+        } else {
+            slide1.style.opacity = '0';
+            slide2.style.opacity = '1';
+            dot1.style.opacity = '0.5';
+            dot2.style.opacity = '0.8';
+            currentSlide = 2;
+        }
+    }
+    
+    // Set up event listeners for manual navigation
+    dot1.addEventListener('click', () => showSlide(1));
+    dot2.addEventListener('click', () => showSlide(2));
+    
+    // Auto rotate slides
+    setInterval(() => {
+        showSlide(currentSlide === 1 ? 2 : 1);
+    }, 5000);
+</script>

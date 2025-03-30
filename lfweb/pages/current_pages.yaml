@@ -2,7 +2,7 @@ forside:
   md: index.md
   sub_pages: false
   title: Forside
-  url: /
+  url: /memberships
 kontakt:
   md: kontakt.md
   sub_pages:
