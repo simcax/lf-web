@@ -26,12 +26,14 @@ def pages(page: str, sub_page: str = None) -> str:
         logger.debug(f"Loading sub page: {page_name} and sub_page: {sub_page}")
         logger.debug(f"{index.index.get(page)}")
         if index.index.get(page).get("sub_pages").get(sub_page) is None:
+            logger.warning(f"Sub page {sub_page} not found in index")
             return render_template("404.html"), 404
         title = index.index.get(page).get("sub_pages").get(sub_page).get("title")
         md = index.index.get(page).get("sub_pages").get(sub_page).get("md")
         page_content = Page(md)
     else:
         if index.index.get(page) is None:
+            logger.warning(f"Page {page} not found in index")
             return render_template("404.html"), 404
         title = index.index.get(page).get("title")
         page_content = Page(index.index[page]["md"])
