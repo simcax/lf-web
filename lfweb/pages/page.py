@@ -34,7 +34,8 @@ class Page:
                 #     extensions=["TailwindExtension()"],
             )
         except FileNotFoundError:
-            logger.warning(f"Markdown file {self.md_file} not found.")
+            # Log a warning if the file is not found
+            logger.critical(f"Markdown file path: {md_file_path.name} not found")
             return "Page content not found."
 
     def create(self, content: str):

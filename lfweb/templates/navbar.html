@@ -16,7 +16,7 @@
     
     <!-- Desktop menu (hidden on mobile) -->
     <div class="hidden lg:flex lg:grow lg:items-center">
-        <ul class="flex flex-wrap items-center font-medium text-sm bg-lime-500">
+        <ul class="flex w-full flex-wrap items-center font-medium text-sm bg-lime-500">
             {% for page in pages %}
             {% if pages[page].sub_pages %}
             <li class="p-4 lg:px-8 relative flex items-center space-x-1 hover:bg-lime-300" x-data="{ open: false }"

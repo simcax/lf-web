@@ -4,7 +4,7 @@
 <h1>{% block title %}{% endblock %}</h1>
 
 <div class="border-5 border-lime-300">
-    <div class="grow">
+    <div class="w-full bg-lime-500">
         {% include 'navbar.html' %}
     </div>
     <div class="flex flex-col lg:flex-row w-full">
@@ -34,6 +34,7 @@
                 <div hx-get="/memberships" hx-swap="innerHTML" hx-trigger="load">
                 <!-- Content loaded by HTMX -->
                 </div>
+
             </div>
 
             <!-- Right side: Member counts (collapsible on mobile) -->
