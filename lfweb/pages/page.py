@@ -1,6 +1,9 @@
 """Module for the Page class."""
 
+from pathlib import Path
+
 import markdown
+from loguru import logger
 
 from .tailwind import TailwindExtension
 
@@ -16,7 +19,10 @@ class Page:
     def render(self):
         """Render the page."""
         try:
-            with open(self.md_file, encoding="utf-8") as file:
+            # Set the path to the markdown file
+            md_file_path = Path("lfweb", "markdown_pages", self.md_file)
+            # Read the markdown file
+            with open(md_file_path, encoding="utf-8") as file:
                 md = file.read()
             return markdown.markdown(
                 md,
@@ -28,6 +34,7 @@ class Page:
                 #     extensions=["TailwindExtension()"],
             )
         except FileNotFoundError:
+            logger.warning(f"Markdown file {self.md_file} not found.")
             return "Page content not found."
 
     def create(self, content: str):

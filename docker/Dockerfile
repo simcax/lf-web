@@ -28,7 +28,6 @@ WORKDIR /app
 
 # Copy the application code
 COPY ./lfweb ./lfweb
-COPY ./*.md ./
 
 # Copy the dependencies from the builder image
 COPY --from=builder /app/.venv /app/.venv
