@@ -1,0 +1,18 @@
+/* Always set the map height explicitly to define the size of the div
+ * element that contains the map. */
+ #map {
+    height: 100%;
+  }
+  
+ .address {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+}
+.popup {
+    display: none;
+    position: absolute;
+    width: 300px;
+    height: 200px;
+    border: 1px solid #ccc;
+}

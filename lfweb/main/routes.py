@@ -23,8 +23,15 @@ def frontpage():
     index = IndexHandling("lfweb/pages/current_pages.yaml")
     index.load_index()
     memberdata = Memberdata()
-
-    return render_template("home.html", pages=index.index, memberdata=memberdata)
+    version = os.environ.get("VERSION")
+    google_maps_api_key = os.environ.get("GOOGLE_MAPS_API_KEY")
+    return render_template(
+        "home.html",
+        pages=index.index,
+        memberdata=memberdata,
+        version=version,
+        google_maps_api_key=google_maps_api_key,
+    )
 
 
 @frontpage_bp.route("/memberships")
