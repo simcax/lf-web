@@ -1,5 +1,6 @@
 """Utility script to update the version in fly.toml with the current git sha."""
 
+import os
 import subprocess
 
 import toml
@@ -29,6 +30,18 @@ def get_git_sha():
 
 def get_git_branch() -> str:
     # Get the current branch name
+    # First check if we're in a GitHub Actions environment
+    # Check for GitHub environment variables
+    if os.environ.get("GITHUB_HEAD_REF"):
+        # For pull requests
+        branch_name = os.environ["GITHUB_HEAD_REF"]
+        return branch_name
+    elif os.environ.get("GITHUB_REF_NAME"):
+        # For pushes to a branch
+        branch_name = os.environ["GITHUB_REF_NAME"]
+        return branch_name
+
+    # Fall back to git command if not in GitHub Actions
     result = subprocess.run(
         ["git", "rev-parse", "--abbrev-ref", "HEAD"], stdout=subprocess.PIPE
     )
