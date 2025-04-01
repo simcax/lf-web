@@ -16,6 +16,9 @@ from lfweb.main import (  # pylint: disable=import-outside-toplevel
     pages_bp,
 )
 
+app_environment = environ.get("ENVIRONMENT_NAME", "development")
+version = environ.get("VERSION")
+
 # from .routes import ()
 sentry_sdk.init(
     dsn="https://f90b2619be9af44f465a5b48a7135f31@o4505902934130688.ingest.us.sentry.io/4505902934261760",
@@ -26,6 +29,9 @@ sentry_sdk.init(
     # of sampled transactions.
     # We recommend adjusting this value in production.
     profiles_sample_rate=1.0,
+    send_default_pii=True,
+    environment=app_environment,
+    release=version,
 )
 
 
