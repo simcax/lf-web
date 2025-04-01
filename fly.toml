@@ -5,20 +5,20 @@ primary_region = "arn"
 dockerfile = "docker/Dockerfile"
 
 [env]
-  PORT = "8080"
-  SESSION_COOKIE_NAME = "lfweb"
-  API_BASE_URL = "https://foreninglet.dk/api/"
-  API_VERSION = "version=1"
-  API_MEMBERS_API = "members"
-  API_ACTIVITIES_API = "activities"
-  ACTIVITY_LIST_URL = "https://activities.lejre.fitness/activity_list"
-  VERSION = "0.1.0-aecd15b"
-  MD_PATH= "lfweb/markdown_pages"
+PORT = "8080"
+SESSION_COOKIE_NAME = "lfweb"
+API_BASE_URL = "https://foreninglet.dk/api/"
+API_VERSION = "version=1"
+API_MEMBERS_API = "members"
+API_ACTIVITIES_API = "activities"
+ACTIVITY_LIST_URL = "https://activities.lejre.fitness/activity_list"
+VERSION = "0.1.0-1b7b275-feature/pages-in-bucket"
+MD_PATH = "lfweb/markdown_pages"
 
 [http_service]
-  internal_port = 8000
-  force_https = true
-  auto_stop_machines = true
-  auto_start_machines = true
-  min_machines_running = 0
-  processes = [ "app",]
+internal_port = 8000
+force_https = true
+auto_stop_machines = true
+auto_start_machines = true
+min_machines_running = 0
+processes = [ "app",]

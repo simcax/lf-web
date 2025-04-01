@@ -54,7 +54,6 @@ jobs:
         run: |
           url=${{ steps.deploy.outputs.url }}
           modified_url=${url#https://}
-          echo "::set-output name=url::$modified_url"
       - name: Deploy PR app to Fly.io
         id: deploy
         uses: superfly/fly-pr-review-apps@1.2.1
