@@ -1,5 +1,6 @@
 """Tests for the index of pages."""
 
+import os
 from pathlib import Path
 
 import yaml
@@ -7,101 +8,85 @@ import yaml
 from lfweb.pages.index import IndexHandling
 
 
-def test_load_index():
+def test_load_index(index_content_basic, temp_dir):
     """Test loading the index."""
-    index_file = "lfweb/pages/pages_index.yaml"
-    index_content = {
-        "forside": {"md": "index.md", "title": "index", "url": "/"},
-        "about": {"md": "about.md", "title": "about", "url": "/about"},
-    }
+    os.environ["MD_PATH"] = temp_dir
+    index_file = Path(temp_dir, "pages_index.yaml")
+    # Create the index file with basic content
     with open(index_file, "w", encoding="utf-8") as file:
-        yaml.dump(index_content, file)
-    index = IndexHandling(index_file)
-    assert index.index == index_content
+        yaml.dump(index_content_basic, file)
+    index = IndexHandling()
+
+    assert index.index == index_content_basic
     Path(index_file).unlink()
 
 
-def test_add_page_to_index():
+def test_add_page_to_index(index_content_basic, temp_dir):
     """Test adding a page to the index."""
-    index_file = "lfweb/pages/pages_index.yaml"
-    index_content = {
-        "forside": {"md": "index.md", "title": "index", "url": "/"},
-        "about": {"md": "about.md", "title": "about", "url": "/about"},
-    }
+    os.environ["MD_PATH"] = temp_dir
+    index_file = Path(temp_dir, "pages_index.yaml")
     with open(index_file, "w", encoding="utf-8") as file:
-        yaml.dump(index_content, file)
-    index = IndexHandling(index_file)
+        yaml.dump(index_content_basic, file)
+    index = IndexHandling()
     index.add("test.md", "test", "/test")
-    index_content["test"] = {"md": "test.md", "title": "test", "url": "/test"}
-    assert index.index == index_content
-    Path(index_file).unlink()
+
+    index_content_basic["test"] = {"md": "test.md", "title": "test", "url": "/test"}
+    assert index.index == index_content_basic
 
 
-def test_add_sub_page_to_index():
+def test_add_sub_page_to_index(index_content_basic_2, temp_dir):
     """Test adding a sub page to the index."""
-    index_file = "lfweb/pages/pages_index.yaml"
-    index_content = {
-        "forside": {"md": "index.md", "title": "index", "url": "/"},
-        "about": {"md": "about.md", "title": "about", "url": "/about"},
-        "test": {"md": "test.md", "title": "test", "url": "/test"},
-    }
+    os.environ["MD_PATH"] = temp_dir
+    index_file = Path(temp_dir, "pages_index.yaml")
+    # Create the index file with basic content
     with open(index_file, "w", encoding="utf-8") as file:
-        yaml.dump(index_content, file)
-    index = IndexHandling(index_file)
-    index.add("test.md", "test", "/test")
+        yaml.dump(index_content_basic_2, file)
+    index = IndexHandling()
+    sub_page_md_file = "test.sub-test-page.md"
+    title = "sub test page"
+    url = "/test/sub-test-page"
+    index.add(sub_page_md_file, title, "/test")
     index.add_sub_page("test", "subpage_title", "sub.md", "/sub")
-    index_content["test"]["sub_pages"] = {
+    index_content_basic_2["test"]["sub_pages"] = {
         "subpage_title": {
             "md": "sub.md",
             "title": "subpage_title",
             "url": "/sub",
         }
     }
-    assert index.index == index_content
-    Path(index_file).unlink()
+    assert index.index == index_content_basic_2
 
 
-def test_get_sub_pages_from_index():
+def test_get_sub_pages_from_index(temp_dir, index_content_basic_2):
     """Test getting sub pages from the index."""
-    index_file = "lfweb/pages/pages_index.yaml"
-    test_page = {
-        "md": "test.md",
-        "title": "test",
-        "url": "/test",
-        "sub_pages": {
+    os.environ["MD_PATH"] = temp_dir
+    index_file = Path(temp_dir, "pages_index.yaml")
+    # Define the test page with sub pages
+    sub_page = {
+        "subpage_title": {
             "md": "sub.md",
             "title": "subpage_title",
             "url": "/sub",
-        },
+        }
     }
-    index_content = {
-        "forside": {"md": "index.md", "title": "index", "url": "/"},
-        "about": {"md": "about.md", "title": "about", "url": "/about"},
-        "test": test_page,
-    }
+    index_content_basic_2["test"]["sub_pages"] = sub_page
     with open(index_file, "w", encoding="utf-8") as file:
         yaml.dump(
-            index_content,
+            index_content_basic_2,
             file,
         )
-    index = IndexHandling(index_file)
-    assert index.get_sub_pages("test") == test_page["sub_pages"]
-    Path(index_file).unlink()
+    index = IndexHandling()
+    assert index.get_sub_pages("test") == sub_page
 
 
-def test_get_sub_pages_from_index_no_sub_pages():
+def test_get_sub_pages_from_index_no_sub_pages(temp_dir, index_content_basic):
     """Test getting sub pages from the index with no sub pages."""
-    index_file = "lfweb/pages/pages_index.yaml"
-    index_content = {
-        "forside": {"md": "index.md", "title": "index", "url": "/"},
-        "about": {"md": "about.md", "title": "about", "url": "/about"},
-        "test": {"md": "test.md", "title": "test", "url": "/test"},
-    }
+    os.environ["MD_PATH"] = temp_dir
+    index_file = Path(temp_dir, "pages_index.yaml")
     with open(index_file, "w", encoding="utf-8") as file:
         yaml.dump(
-            index_content,
+            index_content_basic,
             file,
         )
-    index = IndexHandling(index_file)
+    index = IndexHandling()
     assert index.get_sub_pages("test") == {}
-    Path(index_file).unlink()

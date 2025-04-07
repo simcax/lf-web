@@ -5,6 +5,7 @@ Configuration for pytest
 import random
 import string
 from os import environ
+from tempfile import TemporaryDirectory
 
 import pytest
 from dotenv import load_dotenv
@@ -121,3 +122,29 @@ def doorcount_html():
 def random_id(size=6, chars=string.ascii_uppercase + string.digits):
     """Fixture for generating a random ID"""
     return "".join(random.choice(chars) for _ in range(size))
+
+
+@pytest.fixture
+def index_content_basic():
+    index_content = {
+        "forside": {"md": "index.md", "title": "index", "url": "/"},
+        "about": {"md": "about.md", "title": "about", "url": "/about"},
+    }
+    return index_content
+
+
+@pytest.fixture
+def index_content_basic_2():
+    index_content = {
+        "forside": {"md": "index.md", "title": "index", "url": "/"},
+        "about": {"md": "about.md", "title": "about", "url": "/about"},
+        "test": {"md": "test.md", "title": "test", "url": "/test"},
+    }
+    return index_content
+
+
+@pytest.fixture
+def temp_dir():
+    """Fixture for temporary directory"""
+    with TemporaryDirectory() as temp_dir:
+        yield temp_dir

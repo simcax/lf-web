@@ -12,7 +12,7 @@ API_VERSION = "version=1"
 API_MEMBERS_API = "members"
 API_ACTIVITIES_API = "activities"
 ACTIVITY_LIST_URL = "https://activities.lejre.fitness/activity_list"
-VERSION = "0.1.0-1b7b275-feature/pages-in-bucket"
+VERSION = "0.1.0-34fd4fc-feature/pages-in-bucket"
 MD_PATH = "lfweb/markdown_pages"
 
 [http_service]

@@ -1,14 +1,34 @@
 """Class for index handling."""
 
+import os
+from pathlib import Path
+
 import yaml
 
 
 class IndexHandling:
     """Class for index handling."""
 
-    def __init__(self, index_file: str = "lfweb/pages_index.yaml") -> None:
+    def __init__(self, index_file: str = None) -> None:
         """Initialize the Index object."""
-        self.index_file = index_file
+        # We set the index filename to a default value
+        index_filename = "pages_index.yaml"
+        # The MD_PATH should be set in the environment
+        # But then the index_file should not be set explicitely
+        self.md_path = os.environ.get("MD_PATH")
+        if self.md_path and index_file is None:
+            self.index_file = Path(self.md_path, index_filename)
+        # Only if the self.MD_PATH is not set, the index_file parameter will be considered
+        elif index_file is not None:
+            self.index_file = index_file
+        elif self.md_path and index_file:
+            raise ValueError(
+                f"Please set EITHER the self.MD_PATH env var ({self.md_path}) OR the index_file parameter ({index_file})"
+            )
+        else:
+            raise ValueError(
+                "Index file not set, both self.MD_PATH and index_file is empty"
+            )
         self.index = self.load_index()
 
     def load_index(self) -> dict:
@@ -24,12 +44,43 @@ class IndexHandling:
 
     def add(self, md_file: str, title: str, url) -> None:
         """Add a page to the index."""
-        self.index[title] = {"md": md_file, "title": title, "url": url}
+        # Detect if it is a sub page by counting number of . - 2 . = sub page, 1 = main page
+        sub_index_entry = None
+        if md_file.count(".") == 2:
+            # If it is a sub page, the page should be added as a sub page
+            sub_index_entry = md_file.replace(".md", "").split(".")[1]
+        index_entry = md_file.replace(".md", "").split(".")[0]
+        if sub_index_entry:
+            try:
+                # If the index entry exists, add the sub page to it
+                # If there is no sub pages key, create it
+                if self.index.get(index_entry).get("sub_pages") is None:
+                    self.index[index_entry]["sub_pages"] = {}
+                    self.index[index_entry]["sub_pages"] = {
+                        sub_index_entry: {"md": md_file, "title": title, "url": url}
+                    }
+                else:
+                    self.index[index_entry]["sub_pages"][sub_index_entry] = {
+                        "md": md_file,
+                        "title": title,
+                        "url": url,
+                    }
+            except KeyError:
+                # If the index entry does not exist, create it
+                self.index[index_entry] = {
+                    "sub_pages": {
+                        sub_index_entry: {"md": md_file, "title": title, "url": url}
+                    },
+                }
+        else:
+            self.index[index_entry] = {"md": md_file, "title": title, "url": url}
         with open(self.index_file, "w", encoding="utf-8") as file:
             yaml.dump(self.index, file)
 
     def add_sub_page(self, title: str, sub_title: str, md_file: str, url: str) -> None:
         """Add a sub page to the index."""
+        index_entry = title.replace(".md", "").split(".")[0]
+
         self.index[title]["sub_pages"] = {
             sub_title: {"md": md_file, "title": sub_title, "url": url}
         }
@@ -41,3 +92,46 @@ class IndexHandling:
         # Get 'title" from self.index, if not found, return empty dict
         # Get "sub_pages" from the result of the previous step, if not found, return empty dict
         return self.index.get(title, {}).get("sub_pages", {})
+
+    def update_index(
+        self,
+        original_index_title: str,
+        new_title: str,
+        new_index_title: str,
+        new_md_file: str,
+        new_url: str,
+    ) -> None:
+        """Update the index."""
+        sub_index_entry = None
+        # Update the index with the new title and md file
+        if new_md_file.count(".") == 2:
+            index_entry = new_md_file.replace(".md", "").split(".")[0]
+            sub_index_entry = original_index_title
+        else:
+            index_entry = original_index_title
+
+        if index_entry in self.index:
+            # Check if the original title is a sub page
+            if (
+                sub_index_entry is not None
+                and sub_index_entry in self.index[index_entry]["sub_pages"]
+            ):
+                # If it is a sub page, update the sub page
+                self.index[index_entry]["sub_pages"][new_index_title] = {
+                    "md": new_md_file,
+                    "title": new_title,
+                    "url": new_url,
+                }
+                self.index[index_entry]["sub_pages"].pop(sub_index_entry)
+            else:
+                self.index[new_md_file.replace(".md", "")] = {
+                    "md": new_md_file,
+                    "title": new_title,
+                    "url": new_url,
+                }
+                # Remove the old title from the index
+                self.index.pop(original_index_title)
+        else:
+            raise ValueError(f"Title {original_index_title} not found in index")
+        with open(self.index_file, "w", encoding="utf-8") as file:
+            yaml.dump(self.index, file)
