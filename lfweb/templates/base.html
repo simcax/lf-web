@@ -9,6 +9,7 @@
   <script src="https://unpkg.com/htmx.org@1.9.10"></script>
   <!-- For focusing elements in the dropdown menu -->
   <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.13.10/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
   <script src="https://unpkg.com/alpinejs" defer></script>
   <script>
   (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
@@ -34,10 +35,94 @@
         }
     }
   </script>
+
+<style>
+  body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+  }
+  .container {
+      max-width: 800px;
+      margin: 0 auto;
+  }
+  .editor-wrapper {
+      margin-top: 20px;
+      margin-bottom: 20px;
+  }
+  .preview-wrapper {
+      margin-top: 20px;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+  }
+  .button-wrapper {
+      margin-top: 20px;
+  }
+  .submit-button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+  }
+  .submit-button:hover {
+      background-color: #45a049;
+  }
+</style>
 </head>
 
 <body>
   {% block content %}{% endblock content %}
+  <!-- Include SimpleMDE JavaScript -->
+  <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          // Initialize SimpleMDE
+          var simplemde = new SimpleMDE({
+              element: document.getElementById("markdown-editor"),
+              spellChecker: true,
+              autosave: {
+                  enabled: true,
+                  unique_id: "markdown_editor"
+              },
+              toolbar: [
+                  "bold", "italic", "heading", "|", 
+                  "quote", "unordered-list", "ordered-list", "|",
+                  "link", "image", "table", "|",
+                  "preview", "side-by-side", "fullscreen", "|",
+                  "guide"
+              ]
+          });
+          
+          // Update preview on change
+          simplemde.codemirror.on("change", function() {
+              document.getElementById("preview-content").innerHTML = simplemde.markdown(simplemde.value());
+          });
+          
+          // Initial preview render
+          document.getElementById("preview-content").innerHTML = simplemde.markdown(simplemde.value());
+          
+          // Handle form submission
+          document.getElementById("editor-form").addEventListener("submit", function(e) {
+              // You can add form validation or AJAX submission here
+              const content = simplemde.value();
+              // Uncomment and modify the next line for AJAX submission
+              // e.preventDefault(); // Prevent default form submission
+              // submitContent(content);
+          });
+      });
+      
+      // Example AJAX submission function
+      function submitContent(content) {
+          // Implement your AJAX submission logic here
+          console.log("Submitting content:", content);
+      }
+  </script>
 </body>
 
 </html>

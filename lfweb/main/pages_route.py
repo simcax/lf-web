@@ -167,3 +167,14 @@ def edit_page(page: str, sub_page: str = None) -> str:
         pages=index.index,
         memberdata=memberdata,
     )
+
+
+@bp.route("/editor")
+def editor():
+    """
+    Renders the editor page
+    """
+    return render_template(
+        "/snippets/editor.html",
+        markdown_data="#some markdown data",
+    )

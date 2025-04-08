@@ -3,7 +3,6 @@ Routes for core pages
 """
 
 import os
-from pathlib import Path
 
 from flask import Blueprint, render_template
 from loguru import logger
@@ -21,8 +20,7 @@ def frontpage():
     Renders the frontpage
     """
     logger.info("Front page loading")
-    index_path = Path(os.environ.get("MD_PATH"), "current_pages.yaml")
-    index = IndexHandling(index_path)
+    index = IndexHandling()
     index.load_index()
     memberdata = Memberdata()
     version = os.environ.get("VERSION")
