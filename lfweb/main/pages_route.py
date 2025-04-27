@@ -12,11 +12,6 @@ from lfweb.pages.page import Page
 bp = Blueprint("route_pages", __name__, url_prefix="/pages")
 from pathlib import Path
 
-# Set the path to the folder for markdown files
-md_file_path = os.environ.get("MD_PATH")
-if md_file_path is None:
-    logger.warning("MD_PATH not set in environment variables")
-
 
 @bp.route("/<page>")
 @bp.route("/<page>/<sub_page>")
@@ -133,7 +128,7 @@ def update_page_content(page: str, sub_page: str = None) -> str:
     )
 
 
-@bp.route("/<page>/<sub_page>/edit")
+@bp.route("/<page>/<sub_page>/edit", methods=["GET", "POST"])
 def edit_page(page: str, sub_page: str = None) -> str:
     """
     Renders the edit page
@@ -174,7 +169,8 @@ def editor():
     """
     Renders the editor page
     """
+
     return render_template(
         "/snippets/editor.html",
-        markdown_data="#some markdown data",
+        markdown_data="# some markdown data",
     )
