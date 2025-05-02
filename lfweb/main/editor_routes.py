@@ -26,24 +26,29 @@ def editor(action: str) -> str:
     sub_page = False
     parent_page = None
     markdown_data = ""
+    title = ""
     sub_page = bool(request.args.get("type") == "subpage")
     if sub_page:
         parent_page = request.args.get("parent_page")
     if action == "edit":
         page_name = request.args.get("page_name")
         if sub_page:
-            markdown_data = Page(page_name, parent_page)
+            page = Page(page_name, parent_page)
+            markdown_data = page.md_content()
             logger.debug(
                 f"Loading sub page: {page_name} and parent_page: {parent_page}"
             )
         else:
-            markdown_data = Page(page_name)
+            page = Page(page_name)
+            markdown_data = page.md_content()
+        title = page.title
     return render_template(
         "/snippets/editor.html",
         markdown_data=markdown_data,
         action=action,
         sub_page=sub_page,
         parent_page=parent_page,
+        title=title,
     )
 
 

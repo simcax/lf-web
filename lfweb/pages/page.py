@@ -146,6 +146,18 @@ class Page:
             return ""
         return new_md_file_path
 
+    def md_content(self) -> str:
+        """Get the content of the markdown file."""
+        try:
+            with open(self.md_page_file_path, encoding="utf-8") as file:
+                md = file.read()
+            return md
+        except FileNotFoundError:
+            logger.critical(
+                f"Markdown file path: {self.md_page_file_path.name} not found"
+            )
+            return "Page content not found."
+
     def normalize_md_filename(self, title: str, drop_md: bool = False) -> str:
         """Normalize the markdown filename."""
         # Normalize the title to a filename

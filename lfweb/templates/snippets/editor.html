@@ -7,7 +7,7 @@
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 
 <div class="border border-lime-500 rounded m-4 p-4">
-  <input name="title" type="text" class="border border-slate-200 rounded px-4 py-2 mb-4 w-full" placeholder="Titel">
+  <input name="title" type="text" class="border border-slate-200 rounded px-4 py-2 mb-4 w-full" placeholder="Titel" value="{{ title|safe }}">
   <div class="flex items-center mb-4">
     <input id="sub_page" name="sub_page" type="checkbox" class="border border-slate-200 rounded mr-2" value="true" {% if sub_page %}checked{% endif %}>
     <label for="sub_page">Denne side er en underside til {{ parent_page }}</label>
@@ -16,7 +16,7 @@
   <div id="response" class="mt-4"></div>
 
   <form id="myForm" method="POST" action="/submit">
-    <input type="hidden" name="content" id="editorContent">
+    <input type="hidden" name="content" id="editorContent" value="{{ markdown_data|safe }}">
     <input type="hidden" name="parent_page" value="{{ parent_page }}">
     <!-- Hidden form doesn't need visible elements -->
   </form>
