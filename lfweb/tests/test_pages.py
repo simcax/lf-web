@@ -477,3 +477,18 @@ def test_url_from_md_filename_subpage():
         sub_page_md = sub_page.create("Sub page Content")
         expected_url = f"/pages/{sub_page_md.name.replace('.md', '').replace('.', '/')}"
         assert sub_page.generate_url(sub_page.md_file) == expected_url
+
+
+def test_endpoint_for_save_button_md_editor(client, random_id):
+    """Test the endpoint for creating a page."""
+    with TemporaryDirectory() as temp_dir:
+        os.environ["MD_PATH"] = temp_dir
+        content = "This is a test page."
+        pagename = random_id
+        response = client.post(
+            "/pages/save", data={"content": content, "title": pagename}
+        )
+    assert response.status_code == 200
+    assert response.json["title"] == pagename
+    assert response.json["url"] == f"/pages/{pagename.lower()}"
+    assert response.json["message"] == f"Page {pagename} created successfully"

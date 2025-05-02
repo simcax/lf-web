@@ -35,9 +35,10 @@ def pages(page: str, sub_page: str = None) -> str:
             index.index.get(page).get("sub_pages").get(sub_page).get("title")
         )
         page_content = Page(sub_page_title, main_page_md)
+        title = sub_page_title
     else:
         if index.index.get(page) is None:
-            logger.warning(f"Page {page} not found in index")
+            logger.error(f"Page {page} not found in index")
             return render_template("404.html"), 404
         title = index.index.get(page).get("title")
         page_content = Page(title)
@@ -60,12 +61,15 @@ def create_page(pagename: str, sub_page: str = None) -> str:
     """
     content = request.form.get("content")
     title = request.form.get("title")
-
-    if sub_page:
+    is_sub_page = False
+    if sub_page or bool(request.form.get("sub_page") == "true"):
+        is_sub_page = True
+        pagename = request.form.get("parent_page")
+    if is_sub_page:
         index = IndexHandling()
         index.load_index()
         parent_md_page_name = index.index.get(pagename).get("md")
-        logger.debug(f"Creating sub page: {sub_page}")
+        logger.debug(f"Creating sub page: {pagename}")
     else:
         parent_md_page_name = None
     page = Page(title, parent_md_page_name)
@@ -88,7 +92,7 @@ def update_page_content(page: str, sub_page: str = None) -> str:
     """Updates page content, and stores it in the md file"""
 
     index = IndexHandling()
-    title = request.form.get("title")
+    page_title = request.form.get("title")
     content = request.form.get("content")
     index.load_index()
     if sub_page:
@@ -102,8 +106,8 @@ def update_page_content(page: str, sub_page: str = None) -> str:
             index.index.get(page).get("sub_pages").get(sub_page).get("title")
         )
         md = index.index.get(page).get("md")
-        if original_title != title:
-            new_title = title
+        if original_title != page_title:
+            new_title = page_title
         else:
             new_title = None
         update_page = Page(original_title, md)
@@ -112,15 +116,15 @@ def update_page_content(page: str, sub_page: str = None) -> str:
         if index.index.get(page) is None:
             logger.warning(f"Page {page} not found in index")
             return render_template("404.html"), 404
-        title = index.index.get(page).get("title")
-        update_page = Page(title)
-        update_page.update(content, title)
+        page_title = index.index.get(page).get("title")
+        update_page = Page(page_title)
+        update_page.update(content, page_title)
     return (
         jsonify(
             {
-                "message": f"Page {title} updated successfully",
+                "message": f"Page {page_title} updated successfully",
                 "url": update_page.url,
-                "title": title,
+                "title": page_title,
                 "md_file": update_page.md_file,
             }
         ),
@@ -142,7 +146,7 @@ def edit_page(page: str, sub_page: str = None) -> str:
         logger.debug(f"Loading sub page: {page_name} and sub_page: {sub_page}")
         logger.debug(f"{index.index.get(page)}")
         if index.index.get(page).get("sub_pages").get(sub_page) is None:
-            logger.warning(f"Sub page {sub_page} not found in index")
+            logger.error(f"Sub page {sub_page} not found in index")
             return render_template("404.html"), 404
         title = index.index.get(page).get("sub_pages").get(sub_page).get("title")
         md = index.index.get(page).get("sub_pages").get(sub_page).get("md")
@@ -161,16 +165,4 @@ def edit_page(page: str, sub_page: str = None) -> str:
         page_content=page_content.render(),
         pages=index.index,
         memberdata=memberdata,
-    )
-
-
-@bp.route("/editor")
-def editor():
-    """
-    Renders the editor page
-    """
-
-    return render_template(
-        "/snippets/editor.html",
-        markdown_data="# some markdown data",
     )

@@ -1,18 +1,84 @@
 <head>
-    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
-    <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 </head>
 
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 
-<div id="editor"></div>
-<button class="bg-lime-500 text-white px-4 py-2 rounded" hx-get="/save" hx-target="#preview" hx-swap="innerHTML">Gem</button>
+<div class="border border-lime-500 rounded m-4 p-4">
+  <input name="title" type="text" class="border border-slate-200 rounded px-4 py-2 mb-4 w-full" placeholder="Titel">
+  <div class="flex items-center mb-4">
+    <input id="sub_page" name="sub_page" type="checkbox" class="border border-slate-200 rounded mr-2" value="true" {% if sub_page %}checked{% endif %}>
+    <label for="sub_page">Denne side er en underside til {{ parent_page }}</label>
+  </div>
+  <div id="editor"></div>
+  <div id="response" class="mt-4"></div>
+
+  <form id="myForm" method="POST" action="/submit">
+    <input type="hidden" name="content" id="editorContent">
+    <input type="hidden" name="parent_page" value="{{ parent_page }}">
+    <!-- Hidden form doesn't need visible elements -->
+  </form>
+
+  <div class="mt-4 space-x-2"> <!-- Added margin-top and spacing for buttons -->
+    {% if action == "edit" %}
+    <button class="bg-lime-500 text-white px-4 py-2 rounded" hx-post="/editor/save/create" hx-include="[name='title'], [name='content'], [name='sub_page'], [name='parent_page']" hx-target="#response" hx-swap="innerHTML" id="savebutton">Gem</button>
+    <button class="bg-red-500 text-white px-4 py-2 rounded" hx-get="/editor/delete" hx-target="#response" hx-swap="innerHTML">Slet</button> <!-- Changed color for delete -->
+    {% else %}
+    <button class="bg-lime-500 text-white px-4 py-2 rounded" hx-post="/pages/create/newpage" hx-include="[name='title'], [name='content'], [name='sub_page'], [name='parent_page']" hx-target="#response" hx-swap="innerHTML" id="createbutton">Opret</button>
+    {% endif %}
+    <button class="bg-blue-500 text-white px-4 py-2 rounded" hx-get="/editor/preview" hx-target="#response" hx-swap="innerHTML">Forhåndsvisning</button> <!-- Changed color for preview -->
+    <button class="bg-green-600 text-white px-4 py-2 rounded" hx-get="/editor/publish" hx-target="#response" hx-swap="innerHTML">Udgiv</button> <!-- Changed color for publish -->
+  </div>
+</div>
 
 
 <script>
-    const Editor = toastui.Editor;
-const editor = new Editor({
-  el: document.querySelector('#editor')
-});
+  const Editor = toastui.Editor;
+  const editor = new Editor({
+    el: document.querySelector('#editor'),
+    height: '600px',
+    initialEditType: 'markdown',
+    previewStyle: 'vertical',
+    usageStatistics: false, // Consider disabling for privacy if not needed
+    initialValue: document.getElementById('editorContent').value || '' // Load initial content if available
+  });
+
+  // Function to update the hidden input field before HTMX request
+  function updateHiddenContent(event) {
+    const content = editor.getMarkdown(); // Or use getHTML() for HTML content
+    document.getElementById('editorContent').value = content;
+    // Note: htmx automatically includes the value from the hidden input
+    // if it's included via hx-include on the button or a parent form.
+    // This function ensures the *latest* editor content is put into the
+    // hidden field *just before* the htmx request fires.
+  }
+
+  // Add event listener using htmx:beforeRequest event for better timing
+  document.body.addEventListener('htmx:beforeRequest', function(evt) {
+    // Check if the triggering element is one of our buttons needing editor content
+    const triggeringElementId = evt.detail.elt.id;
+    if (triggeringElementId === 'savebutton' || triggeringElementId === 'createbutton') {
+      updateHiddenContent();
+      // Manually add the content to the parameters if hx-include isn't picking it up reliably
+      // (though hx-include should work with the hidden field)
+      evt.detail.requestConfig.parameters['content'] = document.getElementById('editorContent').value;
+      // Also include title and sub_page explicitly if needed
+      evt.detail.requestConfig.parameters['title'] = document.querySelector('[name="title"]').value;
+      evt.detail.requestConfig.parameters['sub_page'] = document.getElementById('sub_page').checked;
+    }
+     // Ensure sub_page is included correctly for save/create
+    if (triggeringElementId === 'savebutton' || triggeringElementId === 'createbutton') {
+       evt.detail.requestConfig.parameters['sub_page'] = document.getElementById('sub_page').checked ? 'true' : 'false';
+    }
+  });
+
+  // Optional: Load initial content into editor if editing an existing page
+  // This assumes the initial content might be passed via the hidden field
+  // or another mechanism when the template is rendered.
+  // Example: If editing, the server might render the template with content
+  // already in the hidden 'editorContent' input.
+  // The 'initialValue' option in the Editor constructor handles this.
+
 </script>

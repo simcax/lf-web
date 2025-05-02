@@ -34,6 +34,19 @@ class IndexHandling:
     def load_index(self) -> dict:
         """Load the index."""
         try:
+            index = {}
+            # Check if the index file exists
+            if not os.path.exists(self.index_file):
+                # If it does not exist, create an empty index
+                with open(self.index_file, "w", encoding="utf-8") as file:
+                    yaml.dump({}, file)
+                return {}
+            # If it exists, load the index from the file
+            # If the file is empty, create an empty index
+            if os.stat(self.index_file).st_size == 0:
+                with open(self.index_file, "w", encoding="utf-8") as file:
+                    yaml.dump({}, file)
+                return {}
             with open(self.index_file, encoding="utf-8") as file:
                 return yaml.load(file, Loader=yaml.FullLoader)
         except FileNotFoundError:

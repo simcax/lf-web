@@ -7,12 +7,12 @@ from os import environ, urandom
 import redis
 import sentry_sdk
 from flask import Flask  # , render_template, send_from_directory, session
-from flask_mdeditor import MDEditor
 from flask_session import Session
 from loguru import logger
 from werkzeug.http import dump_cookie
 
 from lfweb.main import (  # pylint: disable=import-outside-toplevel
+    editor_bp,
     frontpage_bp,
     images_bp,
     pages_bp,
@@ -78,6 +78,7 @@ def create_app(test_config=None):
         sess.init_app(app)
         # app.register_blueprint(some_route.bp1)
 
+        app.register_blueprint(editor_bp)
         app.register_blueprint(frontpage_bp)
         app.register_blueprint(images_bp)
         app.register_blueprint(pages_bp)
