@@ -1,7 +1,5 @@
 """Module for handling the pages automatically from config file"""
 
-import os
-
 from flask import Blueprint, jsonify, render_template, request
 from loguru import logger
 
@@ -10,7 +8,6 @@ from lfweb.pages.index import IndexHandling
 from lfweb.pages.page import Page
 
 bp = Blueprint("route_pages", __name__, url_prefix="/pages")
-from pathlib import Path
 
 
 @bp.route("/<page>")
@@ -137,8 +134,7 @@ def edit_page(page: str, sub_page: str = None) -> str:
     """
     Renders the edit page
     """
-    index_file = Path(os.environ.get("MD_PATH"), "current_pages.yaml")
-    index = IndexHandling(index_file)
+    index = IndexHandling()
     index.load_index()
     memberdata = Memberdata()
     if sub_page:
