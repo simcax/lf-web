@@ -28,6 +28,7 @@ WORKDIR /app
 
 # Copy the application code
 COPY ./lfweb ./lfweb
+COPY ./docker/config/gunicorn.py ./gunicorn.py
 
 # Copy the dependencies from the builder image
 COPY --from=builder /app/.venv /app/.venv
@@ -45,4 +46,4 @@ EXPOSE 8000
 ENV FLASK_APP=lfweb
 
 # Command to run the application using Gunicorn
-ENTRYPOINT ["/app/.venv/bin/gunicorn", "-b", "0.0.0.0:8000", "lfweb:create_app()"]
+ENTRYPOINT ["/app/.venv/bin/gunicorn","-c", "gunicorn.py", "-b", "0.0.0.0:8000", "lfweb:create_app()"]
