@@ -145,9 +145,9 @@ class IndexHandling:
                 }
                 # move the sub pages to the new index title
                 if self.index.get(original_index_title) is not None:
-                    self.index[new_md_file.replace(".md", "")]["sub_pages"] = (
-                        self.index[original_index_title].get("sub_pages")
-                    )
+                    self.index[new_md_file.replace(".md", "")][
+                        "sub_pages"
+                    ] = self.index[original_index_title].get("sub_pages")
                 if self.index[original_index_title].get("sub_pages", {}) is not None:
                     # Replace the old main md index name in the sub page md files path
                     for sub_page in self.index[original_index_title].get(
@@ -174,7 +174,7 @@ class IndexHandling:
                         # Update the url of the sub page
                         self.index[new_md_file.replace(".md", "")]["sub_pages"][
                             sub_page
-                        ]["url"] = new_url + "/" + sub_page
+                        ]["url"] = (new_url + "/" + sub_page)
                 # Remove the old title from the index
                 self.index.pop(original_index_title)
         else:

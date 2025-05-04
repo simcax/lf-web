@@ -39,7 +39,6 @@ def login():
             logger.info("User %s logged in. redirecting to index page.", username)
             logger.info(g)
             return render_template("snippets/logged_in.html", userdata=userData)
-            # eturn render_template("snippets/auth_result.html", g=g)
 
         flash(error, "login_error")
 
