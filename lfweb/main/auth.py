@@ -97,7 +97,10 @@ def load_logged_in_user():
             for user in users:
                 if user["MemberId"] == user_id:
                     g.user = user
-                    logger.info(f"User found: {user}")
+                    session["user_id"] = user["MemberId"]
+                    session["user_name"] = f"{user['FirstName']} {user['LastName']}"
+                    session["user_email"] = user["Email"]
+                    logger.info(f"User found: {user['FirstName']} {user['LastName']}")
                     break
         except requests.exceptions.RequestException as e:
             raise (SystemExit(e))
