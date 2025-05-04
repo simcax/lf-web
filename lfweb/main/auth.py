@@ -80,10 +80,11 @@ def lfUserLogin(username, password):
 @bp.before_app_request
 def load_logged_in_user():
     user_id = session.get("user_id")
-
+    logger.info("User ID: %s", user_id)
     if user_id is None:
         g.user = None
     else:
+        logger.info("User ID found: %s", user_id)
         apiPass = os.environ.get("API_PASSWORD")
         apiUser = os.environ.get("API_USERNAME")
         if not apiPass or not apiUser:
@@ -92,9 +93,11 @@ def load_logged_in_user():
         try:
             r = requests.get(url, auth=(apiUser, apiPass))
             users = json.loads(r.text)
+            logger.info("API User data retrieved.")
             for user in users:
                 if user["MemberId"] == user_id:
                     g.user = user
+                    logger.info("User found: %s", user)
                     break
         except requests.exceptions.RequestException as e:
             raise (SystemExit(e))
