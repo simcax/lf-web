@@ -27,19 +27,21 @@ def editor(action: str) -> str:
     parent_page = None
     markdown_data = ""
     title = ""
+    page_name = ""
     sub_page = bool(request.args.get("type") == "subpage")
     if sub_page:
         parent_page = request.args.get("parent_page")
     if action == "edit":
         page_name = request.args.get("page_name")
+        title = request.args.get("title")
         if sub_page:
-            page = Page(page_name, parent_page)
+            page = Page(title, parent_page)
             markdown_data = page.md_content()
             logger.debug(
                 f"Loading sub page: {page_name} and parent_page: {parent_page}"
             )
         else:
-            page = Page(page_name)
+            page = Page(title)
             markdown_data = page.md_content()
         title = page.title
     return render_template(
@@ -49,6 +51,7 @@ def editor(action: str) -> str:
         sub_page=sub_page,
         parent_page=parent_page,
         title=title,
+        page_name=page_name,
     )
 
 

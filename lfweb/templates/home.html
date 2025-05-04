@@ -11,7 +11,7 @@
         <!-- Original three-panel layout -->
         
         
-        <div class="flex flex-col md:flex-row lg:flex-grow">
+        <div class="flex flex-col md:flex-row w-full"> <!-- Removed lg:flex-grow -->
             <!-- Left side: Doorcount (collapsible on mobile) -->
             <div class="w-full md:w-64 md:min-w-64 md:flex-shrink-0">
                 <button class="md:hidden w-full bg-lime-500 text-white py-2 px-4 rounded flex justify-between items-center mb-2" 
@@ -30,11 +30,15 @@
             </div>
 
             <!-- Center: Memberships -->
-            <div id="maincontent" class="px-4 w-full md:flex-grow lg:flex-grow ">
-                <div hx-get="/memberships" hx-swap="innerHTML" hx-trigger="load">
+            <div id="maincontent" class="px-4 md:flex-1">
+            {% if center_content %}
+                {{ center_content|safe }}
+            {% else %}
+             <!-- Removed w-full -->
+                <div class="w-full" hx-get="/memberships" hx-swap="innerHTML" hx-trigger="load">
                 <!-- Content loaded by HTMX -->
                 </div>
-
+            {% endif %}
             </div>
 
             <!-- Right side: Member counts (collapsible on mobile) -->

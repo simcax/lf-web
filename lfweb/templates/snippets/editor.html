@@ -23,13 +23,27 @@
 
   <div class="mt-4 space-x-2"> <!-- Added margin-top and spacing for buttons -->
     {% if action == "edit" %}
-    <button class="bg-lime-500 text-white px-4 py-2 rounded" hx-post="/editor/save/create" hx-include="[name='title'], [name='content'], [name='sub_page'], [name='parent_page']" hx-target="#response" hx-swap="innerHTML" id="savebutton">Gem</button>
-    <button class="bg-red-500 text-white px-4 py-2 rounded" hx-get="/editor/delete" hx-target="#response" hx-swap="innerHTML">Slet</button> <!-- Changed color for delete -->
+    {% if sub_page %}
+      {% set update_post_url = "/pages/update/" ~ parent_page ~ "/" ~ page_name %}
+      {% set delete_post_url = "/pages/delete/" ~ parent_page ~ "/" ~ page_name %}
+    {% else %}
+      {% set update_post_url = "/pages/update/" ~ page_name %}
+      {% set delete_post_url = "/pages/delete/" ~ page_name %}
+    {% endif %}
+    <button
+      class="bg-lime-500 text-white px-4 py-2 rounded"
+      hx-post="{{ update_post_url }}"
+      hx-include="[name='title'], [name='content'], [name='sub_page'], [name='parent_page']"
+      hx-target="#response"
+      hx-swap="innerHTML"
+      id="savebutton"
+    >Gem</button>
+    <button class="bg-red-500 text-white px-4 py-2 rounded" hx-post="{{ delete_post_url }}" hx-include="[name='title'], [name='content'], [name='sub_page'], [name='parent_page']" hx-target="#response" hx-swap="innerHTML" id="deletebutton">Slet</button> <!-- Changed color for delete -->
     {% else %}
     <button class="bg-lime-500 text-white px-4 py-2 rounded" hx-post="/pages/create/newpage" hx-include="[name='title'], [name='content'], [name='sub_page'], [name='parent_page']" hx-target="#response" hx-swap="innerHTML" id="createbutton">Opret</button>
     {% endif %}
-    <button class="bg-blue-500 text-white px-4 py-2 rounded" hx-get="/editor/preview" hx-target="#response" hx-swap="innerHTML">Forhåndsvisning</button> <!-- Changed color for preview -->
-    <button class="bg-green-600 text-white px-4 py-2 rounded" hx-get="/editor/publish" hx-target="#response" hx-swap="innerHTML">Udgiv</button> <!-- Changed color for publish -->
+    <button class="bg-blue-500 text-white px-4 py-2 rounded" hx-get="/editor/preview" hx-target="#response" hx-swap="innerHTML" id="previewbutton">Forhåndsvisning</button>
+    <!-- for the future <button class="bg-green-600 text-white px-4 py-2 rounded" hx-get="/editor/publish" hx-target="#response" hx-swap="innerHTML" id="publishButton">Udgiv</button>  -->
   </div>
 </div>
 

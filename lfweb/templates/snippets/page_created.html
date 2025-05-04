@@ -1,0 +1,32 @@
+<!-- filepath: /home/carstenskov/projekter/lf-web/lfweb/templates/snippets/page_created.html -->
+<div class="bg-lime-100 border border-lime-400 text-lime-700 px-4 py-3 rounded relative" role="alert">
+    <strong class="font-bold">Oprettet!</strong>
+    <span class="block sm:inline">Siden "{{ title }}" er blevet oprettet.</span>
+    <p class="mt-2">
+        Se siden: <a href="{{ url }}" target="_parent" class="text-blue-500 hover:underline">{{ title }}</a>
+    </p>
+</div>
+
+<script>
+    (function() {
+        // Find the button that triggered the action - assuming it has id="createbutton"
+        let createButton = document.getElementById('createbutton');
+
+        if (createButton) {
+            createButton.textContent = 'Oprettet!';
+            createButton.disabled = true; // Disable after success
+        }
+
+        // Reload the opener window after a short delay
+        // to allow the user to see the success message and reflect the creation.
+        setTimeout(function() {
+            // Check if window.opener exists and is not closed before trying to reload
+            if (window.opener && !window.opener.closed) {
+                 window.opener.location.reload();
+            }
+            // Optionally, close the current window if it's a popup/tab used for confirmation
+            // window.close();
+        }, 1500); // Delay in milliseconds (e.g., 1.5 seconds)
+
+    })();
+</script>

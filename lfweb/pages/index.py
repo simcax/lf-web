@@ -116,6 +116,7 @@ class IndexHandling:
     ) -> None:
         """Update the index."""
         sub_index_entry = None
+        md_files_to_rename = []
         # Update the index with the new title and md file
         if new_md_file.count(".") == 2:
             index_entry = new_md_file.replace(".md", "").split(".")[0]
@@ -142,9 +143,84 @@ class IndexHandling:
                     "title": new_title,
                     "url": new_url,
                 }
+                # move the sub pages to the new index title
+                if self.index.get(original_index_title) is not None:
+                    self.index[new_md_file.replace(".md", "")]["sub_pages"] = (
+                        self.index[original_index_title].get("sub_pages")
+                    )
+                if self.index[original_index_title].get("sub_pages", {}) is not None:
+                    # Replace the old main md index name in the sub page md files path
+                    for sub_page in self.index[original_index_title].get(
+                        "sub_pages", {}
+                    ):
+                        original_sub_page_md_file = self.index[original_index_title][
+                            "sub_pages"
+                        ][sub_page]["md"]
+                        new_sub_page_md_file = original_sub_page_md_file.replace(
+                            original_index_title, new_index_title
+                        )
+                        # Update the sub page md file name
+                        self.index[new_md_file.replace(".md", "")]["sub_pages"][
+                            sub_page
+                        ]["md"] = new_sub_page_md_file
+                        # Add the sub page md file to the list of files to rename
+
+                        md_files_to_rename.append(
+                            {
+                                "old": original_sub_page_md_file,
+                                "new": new_sub_page_md_file,
+                            }
+                        )
+                        # Update the url of the sub page
+                        self.index[new_md_file.replace(".md", "")]["sub_pages"][
+                            sub_page
+                        ]["url"] = new_url + "/" + sub_page
                 # Remove the old title from the index
                 self.index.pop(original_index_title)
         else:
             raise ValueError(f"Title {original_index_title} not found in index")
         with open(self.index_file, "w", encoding="utf-8") as file:
             yaml.dump(self.index, file)
+        return md_files_to_rename
+
+    def delete_index_entry(self, title: str) -> None:
+        """
+        Delete an index entry.
+
+        ::param:: title: The full name of the md file of the page to be removed from the index
+        ::return:: True if the entry was deleted successfully
+        ::raises:: ValueError: If the title is not found in the index
+        """
+        # First check if this is a sub page
+        sub_index_entry = None
+        if title.count(".") == 2:
+            # If it is a sub page, the page should be deleted as a sub page
+            sub_index_entry = title.replace(".md", "").split(".")[1]
+            index_entry = title.replace(".md", "").split(".")[0]
+        else:
+            index_entry = title.replace(".md", "")
+        # If it is a sub page, delete the sub page
+        if sub_index_entry:
+            try:
+                # If the index entry exists, delete the sub page from it
+                # If there is no sub pages key, create it
+                if self.index.get(index_entry).get("sub_pages") is None:
+                    raise ValueError(f"Sub page {sub_index_entry} not found in index")
+                else:
+                    self.index[index_entry]["sub_pages"].pop(sub_index_entry)
+            except KeyError:
+                # If the index entry does not exist, raise an error
+                raise ValueError(f"Title {index_entry} not found in index")
+        else:
+            # If it is not a sub page, delete the index entry
+            # Check if the index entry exists
+            if self.index.get(index_entry) is None:
+                raise ValueError(f"Title {index_entry} not found in index")
+            else:
+                # If it does, delete it
+                self.index.pop(index_entry)
+
+        # Write the index back to the file
+        with open(self.index_file, "w", encoding="utf-8") as file:
+            yaml.dump(self.index, file)
+        return True

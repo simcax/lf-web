@@ -1,0 +1,40 @@
+<div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+    <strong class="font-bold">Success!</strong>
+    <span class="block sm:inline">{{ message }}</span>
+    <p class="mt-2">
+        View page: <a href="{{ url.replace('/pages','/permalinks') }}" class="text-blue-500 hover:underline">{{ title }}</a>
+    </p>
+</div>
+
+<script>
+    (function() {
+        console.log( "{{ reload_url|safe }}" );
+        console.log( "{{ reload_url }}" );
+        // Find the button that triggered the action
+        let saveButton = document.getElementById('savebutton');
+        let createButton = document.getElementById('createbutton');
+
+        if (saveButton) {
+            saveButton.textContent = 'Gemt!';
+            saveButton.disabled = true; // Optionally disable after success
+        } else if (createButton) {
+            createButton.textContent = 'Oprettet!';
+            createButton.disabled = true; // Optionally disable after success
+        }
+
+        // Redirect to the newly created/updated page after a short delay
+        // to allow the user to see the success message.
+        setTimeout(function() {
+            let url = "{{ url.replace('/pages','/permalinks') }}";
+            window.opener.location.href = url; // Navigate the opener window to the new URL
+            // Also reload the current window with the new title if needed
+            {% if reload_url %}
+            let reloadUrl = "{{ reload_url|safe }}";
+            window.location.href = reloadUrl; // Reload the current window with the new URL
+            {% endif %}
+            // Optionally, close the current window if it's a popup/tab used for confirmation
+            // window.close();
+        }, 1500); // Delay in milliseconds (e.g., 1.5 seconds)
+
+    })();
+</script>

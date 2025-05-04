@@ -1,21 +1,23 @@
 """Lejre Fitness Website - Flask App"""
 
 import os
-from datetime import timedelta
+from datetime import datetime, timedelta
 from os import environ, urandom
 
 import redis
 import sentry_sdk
-from flask import Flask  # , render_template, send_from_directory, session
+from flask import Flask, session  # , render_template, send_from_directory, session
 from flask_session import Session
 from loguru import logger
 from werkzeug.http import dump_cookie
 
 from lfweb.main import (  # pylint: disable=import-outside-toplevel
+    auth_bp,
     editor_bp,
     frontpage_bp,
     images_bp,
     pages_bp,
+    permalinks_bp,
 )
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -82,7 +84,18 @@ def create_app(test_config=None):
         app.register_blueprint(frontpage_bp)
         app.register_blueprint(images_bp)
         app.register_blueprint(pages_bp)
+        app.register_blueprint(permalinks_bp)
+        app.register_blueprint(auth_bp)
 
         app.logger.info("App routes loaded")
         app.logger.info(app.url_map)
         return app
+
+    # Let's make sessions permanent, if site is visited every 5 days
+    @app.before_request
+    def make_session_permanent():
+        """
+        Make the session stick for at least 5 days.
+        """
+        session.permanent = True
+        app.permanent_session_lifetime = datetime.timedelta(days=5)

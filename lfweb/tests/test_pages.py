@@ -68,6 +68,19 @@ def test_create_sub_page(temp_dir, index_content_basic_2):
     assert sub_page.url == expected_url
 
 
+# Tests for retrieving the page content
+def test_get_page_content(temp_dir):
+    """Test getting the content of a page."""
+    # Use a temporary directory to avoid file system pollution
+    os.environ["MD_PATH"] = temp_dir
+    content = "This is a test page."
+    title = "Test page"
+    page = Page(title)
+    page.create(content)
+    md_content = page.md_content()
+    assert md_content == content
+
+
 def test_render_page(temp_dir):
     """Test rendering a page."""
     os.environ["MD_PATH"] = temp_dir
@@ -492,3 +505,40 @@ def test_endpoint_for_save_button_md_editor(client, random_id):
     assert response.json["title"] == pagename
     assert response.json["url"] == f"/pages/{pagename.lower()}"
     assert response.json["message"] == f"Page {pagename} created successfully"
+
+
+def test_delete_page(random_id):
+    """Test the page class method for deleting a page."""
+    with TemporaryDirectory() as temp_dir:
+        os.environ["MD_PATH"] = temp_dir
+        content = "This is a test page."
+        pagename = random_id
+        page = Page(pagename)
+        page.create(content)
+        page.delete()
+        assert not Path(temp_dir, f"{pagename}.md").exists()
+        # Check if the page was removed from the index
+        index = IndexHandling()
+        index.load_index()
+        assert pagename not in index.index
+        # Check if the page was removed from the index file
+        index_file = Path(temp_dir, "pages_index.yaml")
+        with open(index_file, "r", encoding="utf-8") as file:
+            index_content = file.read()
+        assert pagename not in index_content
+
+
+def test_delete_sub_page(random_id):
+    """Test the page class method for deleting a sub page."""
+    with TemporaryDirectory() as temp_dir:
+        os.environ["MD_PATH"] = temp_dir
+        content = "This is a test page."
+        main_page_title = "This is my test page"
+        page = Page(main_page_title)
+        main_page_file = page.create(content)
+        sub_page_title = "This is my sub test page"
+        sub_page_content = "This is a sub test page."
+        sub_page = Page(sub_page_title, main_page_file.name)
+        sub_page.create(sub_page_content)
+        sub_page.delete()
+        assert not Path(temp_dir, f"{main_page_title}.{sub_page_title}.md").exists()

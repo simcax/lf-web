@@ -1,0 +1,50 @@
+<!-- filepath: /home/carstenskov/projekter/lf-web/lfweb/templates/snippets/page_deleted.html -->
+<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+    <strong class="font-bold">Slettet!</strong>
+    <span class="block sm:inline">Siden "{{ title }}" er blevet slettet.</span>
+</div>
+
+<script>
+    (function() {
+        // Find the button that triggered the action - assuming it has id="deletebutton"
+        let deleteButton = document.getElementById('deletebutton');
+        let saveButton = document.getElementById('savebutton');
+        let createButton = document.getElementById('createbutton');
+        let publishButton = document.getElementById('publishbutton');
+        let previewButton = document.getElementById('previewbutton');
+        // Remove the publish, preview, save and create buttons if they exist
+        if (saveButton) {
+            saveButton.remove();
+        }
+        if (createButton) {
+            createButton.remove();
+        }
+        if (publishButton) {
+            publishButton.remove();
+        }
+        if (previewButton) {
+            previewButton.remove();
+        }
+
+        if (deleteButton) {
+            deleteButton.textContent = 'Slettet!';
+            deleteButton.disabled = true; // Disable after success
+        }
+
+        // Reload the opener window after a short delay
+        // to allow the user to see the success message and reflect the deletion.
+        setTimeout(function() {
+            // Check if window.opener exists and is not closed before trying to reload
+            if (window.opener && !window.opener.closed) {
+                 window.opener.location.href = "/";
+            }
+        }, 1500); // Delay in milliseconds (e.g., 1.5 seconds)
+        // Close the current window after another 10 secincs
+        setTimeout(function() {
+            if (window.opener && !window.opener.closed) {
+                window.close();
+            }
+        }, 10000); // Delay in milliseconds (e.g., 10 seconds)
+
+    })();
+</script>

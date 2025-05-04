@@ -125,13 +125,25 @@ class Page:
                 self.md_page_file_path.rename(new_md_file_path)
                 # Update the md file name in the index
                 index = IndexHandling()
-                index.update_index(
+                files_to_rename = index.update_index(
                     self.index_title,
                     new_title,
                     new_index_title,
                     new_md_file_path.name,
                     new_url,
                 )
+                # Rename any sub page md files needed
+                for file in files_to_rename:
+                    old_file = Path(self.md_file_path, file["old"])
+                    new_file = Path(self.md_file_path, file["new"])
+                    if old_file.exists():
+                        old_file.rename(new_file)
+                        logger.info(f"Renamed {old_file} to {new_file}")
+                    else:
+                        logger.warning(f"{old_file} does not exist")
+                        raise FileExistsError(
+                            f"{old_file} does not exist. Can't rename file."
+                        )
                 # Update the page with the new info
                 self.md_file = new_title_md_file
                 self.md_page_file_path = new_md_file_path
@@ -186,3 +198,19 @@ class Page:
         # Generate the full url
         full_url = f"{base_url}/{base_title}"
         return full_url
+
+    def delete(self):
+        """Delete the page."""
+        try:
+            os.remove(self.md_page_file_path)
+            logger.info(f"Page {self.md_file} deleted successfully.")
+            # Update the index
+            index = IndexHandling()
+            index.delete_index_entry(self.md_file)
+        except FileNotFoundError:
+            logger.error(f"Error deleting page {self.md_file}: file not found")
+            raise FileNotFoundError(f"File {self.md_page_file_path} not found")
+        except Exception as e:
+            logger.error(f"Error deleting page {self.md_file}: {e}")
+            raise e
+        return self.md_page_file_path
