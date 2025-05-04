@@ -1,19 +1,9 @@
-This is a test page:
+nyt-om-lejre-fitness:
+  md: nyt-om-lejre-fitness.md
   sub_pages:
-    this-is-a-test-page:
-      md: this-is-the-main-page.this-is-a-test-page.md
-      title: This is a test page
-      url: null
-This is the main page:
-  md: this-is-the-main-page.md
-  title: This is the main page
-  url: null
-this-is-the-main-page:
-  md: this-is-the-main-page.md
-  sub_pages:
-    this-is-a-test-page:
-      md: this-is-the-main-page.this-is-a-test-page.md
-      title: This is a test page
-      url: /pages/this-is-the-main-page/this-is-a-test-page
-  title: This is the main page
-  url: /pages/this-is-the-main-page
+    bestyrelsen:
+      md: nyt-om-lejre-fitness.bestyrelsen.md
+      title: Bestyrelsen
+      url: /pages/nyt-om-lejre-fitness/bestyrelsen
+  title: nyt om lejre fitness
+  url: /pages/nyt-om-lejre-fitness
