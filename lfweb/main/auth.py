@@ -36,7 +36,9 @@ def login():
             session["user_id"] = userData["id"]
             session["user_name"] = f"{userData['first_name']} {userData['last_name']}"
             session["user_email"] = userData["email"]
-            logger.info("User %s logged in. redirecting to index page.", username)
+            logger.info(
+                "User %s logged in. redirecting to index page.", session["user_name"]
+            )
             logger.info(g)
             return render_template("snippets/logged_in.html", userdata=userData)
 

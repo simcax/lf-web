@@ -12,7 +12,7 @@ from loguru import logger
 from werkzeug.http import dump_cookie
 
 from lfweb.main import (  # pylint: disable=import-outside-toplevel
-    auth_bp,
+    auth,
     editor_bp,
     frontpage_bp,
     images_bp,
@@ -86,7 +86,7 @@ def create_app(test_config=None):
         app.register_blueprint(images_bp)
         app.register_blueprint(pages_bp)
         app.register_blueprint(permalinks_bp)
-        app.register_blueprint(auth_bp)
+        app.register_blueprint(auth.bp)
 
         app.logger.info("App routes loaded")
         app.logger.info(app.url_map)
