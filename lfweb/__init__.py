@@ -65,6 +65,7 @@ def create_app(test_config=None):
         SESSION_COOKIE_NAME=str(environ.get("SESSION_COOKIE_NAME", site_short_name)),
         SESSION_COOKIE_HTTPONLY=True,  # Prevents JavaScript access to cookies
         PERMANENT_SESSION_LIFETIME=timedelta(days=14),  # Controls session expiration
+        MAX_CONTENT_LENGTH=1024 * 1024 * 16,  # 16 MB
     )
     app.config["MDEDITOR_FILE_UPLOADER"] = os.path.join(
         basedir, "uploads"
