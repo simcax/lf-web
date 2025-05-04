@@ -73,3 +73,4 @@ jobs:
               AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}              
               BUCKET_NAME=${{ secrets.BUCKET_NAME }}
               ENVIRONMENT_NAME=${{ secrets.ENVIRONMENT_NAME }}
+              SESSION_COOKIE_DOMAIN=${{ steps.modify-url.outputs.url }}
