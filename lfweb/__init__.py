@@ -1,6 +1,7 @@
 """Lejre Fitness Website - Flask App"""
 
 import os
+import uuid
 from datetime import datetime, timedelta
 from os import environ, urandom
 
@@ -91,12 +92,3 @@ def create_app(test_config=None):
         app.logger.info("App routes loaded")
         app.logger.info(app.url_map)
         return app
-
-    # Let's make sessions permanent, if site is visited every 5 days
-    @app.before_request
-    def make_session_permanent():
-        """
-        Make the session stick for at least 5 days.
-        """
-        session.permanent = True
-        app.permanent_session_lifetime = datetime.timedelta(days=5)

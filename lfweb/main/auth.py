@@ -2,6 +2,7 @@ import functools
 import json
 import os
 import socket
+import uuid
 
 import requests
 from flask import (
@@ -126,3 +127,11 @@ def login_required(view):
         return view(**kwargs)
 
     return wrapped_view
+
+
+@bp.before_app_request
+def debug_session():
+    if "session_id" not in session:
+        session["session_id"] = str(uuid.uuid4())
+    logger.info(f"Session ID: {session['session_id']}")
+    logger.info(f"Session Contents: {session}")
