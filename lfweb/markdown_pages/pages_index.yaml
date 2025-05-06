@@ -1,0 +1,9 @@
+nyt-om-lejre-fitness:
+  md: nyt-om-lejre-fitness.md
+  sub_pages:
+    bestyrelsen:
+      md: nyt-om-lejre-fitness.bestyrelsen.md
+      title: Bestyrelsen
+      url: /pages/nyt-om-lejre-fitness/bestyrelsen
+  title: nyt om lejre fitness
+  url: /pages/nyt-om-lejre-fitness

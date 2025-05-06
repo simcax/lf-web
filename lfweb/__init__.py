@@ -1,20 +1,30 @@
 """Lejre Fitness Website - Flask App"""
 
-from datetime import timedelta
+import os
+import uuid
+from datetime import datetime, timedelta
 from os import environ, urandom
 
 import redis
 import sentry_sdk
-from flask import Flask  # , render_template, send_from_directory, session
+from flask import Flask, session  # , render_template, send_from_directory, session
 from flask_session import Session
 from loguru import logger
 from werkzeug.http import dump_cookie
 
 from lfweb.main import (  # pylint: disable=import-outside-toplevel
+    auth,
+    editor_bp,
     frontpage_bp,
     images_bp,
     pages_bp,
+    permalinks_bp,
 )
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+app_environment = environ.get("ENVIRONMENT_NAME", "development")
+version = environ.get("VERSION")
 
 # from .routes import ()
 sentry_sdk.init(
@@ -26,6 +36,9 @@ sentry_sdk.init(
     # of sampled transactions.
     # We recommend adjusting this value in production.
     profiles_sample_rate=1.0,
+    send_default_pii=True,
+    environment=app_environment,
+    release=version,
 )
 
 
@@ -53,7 +66,11 @@ def create_app(test_config=None):
         SESSION_COOKIE_NAME=str(environ.get("SESSION_COOKIE_NAME", site_short_name)),
         SESSION_COOKIE_HTTPONLY=True,  # Prevents JavaScript access to cookies
         PERMANENT_SESSION_LIFETIME=timedelta(days=14),  # Controls session expiration
+        MAX_CONTENT_LENGTH=1024 * 1024 * 16,  # 16 MB
     )
+    app.config["MDEDITOR_FILE_UPLOADER"] = os.path.join(
+        basedir, "uploads"
+    )  # this floder uesd to save your uploaded image
 
     print(secret_key)
     if test_config:
@@ -65,9 +82,12 @@ def create_app(test_config=None):
         sess.init_app(app)
         # app.register_blueprint(some_route.bp1)
 
+        app.register_blueprint(editor_bp)
         app.register_blueprint(frontpage_bp)
         app.register_blueprint(images_bp)
         app.register_blueprint(pages_bp)
+        app.register_blueprint(permalinks_bp)
+        app.register_blueprint(auth.bp)
 
         app.logger.info("App routes loaded")
         app.logger.info(app.url_map)

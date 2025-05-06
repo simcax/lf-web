@@ -20,7 +20,7 @@ def frontpage():
     Renders the frontpage
     """
     logger.info("Front page loading")
-    index = IndexHandling("lfweb/pages/current_pages.yaml")
+    index = IndexHandling()
     index.load_index()
     memberdata = Memberdata()
     version = os.environ.get("VERSION")

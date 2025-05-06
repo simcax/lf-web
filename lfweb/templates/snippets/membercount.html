@@ -1,20 +1,36 @@
-<div class="p-0 max-w-md mx-auto">
+<!-- Member Growth Graph -->
+<div class="p-0 max-w-md mx-auto mt-4">
     <div class="bg-white shadow-md rounded-lg overflow-hidden">
-
         <div class="border-2 rounded-md outline">
             <div class="bg-lime-300/20 text-lg font-semibold text-gray-800 px-2">
-                Antal medlemmer
+                Medlemmer
             </div>
-            <div class="text-xl text-lime-700 bold p-2">
-                {{ memberdata.members.genuine_member_count }}
+            <div class="relative p-4 h-60">
+                <!-- Member count in foreground -->
+                <div class="absolute inset-0 flex flex-col items-center justify-center z-10">
+                    <div class="text-5xl font-bold text-lime-700">
+                        {{ memberdata.members.genuine_member_count }}
+                    </div>
+                    <div class="text-sm text-gray-600">medlemmer i alt</div>
+                </div>
             </div>
         </div>
-        <div class="border-2 rounded-md outline px-2">
+    </div>
+</div>
+<div class="p-0 max-w-md mx-auto mt-4">
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="border-2 rounded-md outline">
             <div class="bg-lime-300/20 text-lg font-semibold text-gray-800 px-2">
-                Nye medlemmer i denne måned
+                Denne måneds nye medlemmer
             </div>
-            <div class="text-xl text-lime-700 bold">
-                {{ memberdata.members.new_members_current_month }}
+            <div class="relative p-4 h-60">
+                <!-- Member count in foreground -->
+                <div class="absolute inset-0 flex flex-col items-center justify-center z-10">
+                    <div class="text-5xl font-bold text-lime-700">
+                        {{ memberdata.members.new_members_current_month  }}
+                    </div>
+                    <div class="text-sm text-gray-600">Nye medlemmer i denne måned</div>
+                </div>
             </div>
         </div>
     </div>
